@@ -10,6 +10,7 @@
 *{
   box-sizing:border-box;
   user-select:none;
+  -webkit-user-select:none;
 }
 
 html,body{
@@ -26,15 +27,16 @@ html,body{
   width:100vw;
   height:100vh;
   overflow:hidden;
-  background:#75c94d;
+  background:#79c94d;
 }
 
-/* पूरी दुनिया */
+/* ================= पूरी दुनिया ================= */
+
 #world{
   position:absolute;
   left:0;
   top:0;
-  width:6000px;
+  width:12000px;
   height:100%;
 }
 
@@ -43,18 +45,18 @@ html,body{
   position:absolute;
   top:0;
   left:0;
-  width:6000px;
-  height:55%;
-  background:linear-gradient(#56c7fa,#d9f6ff);
+  width:12000px;
+  height:60%;
+  background:linear-gradient(#55c9fa,#dff8ff);
 }
 
 /* सूरज */
 #sun{
   position:absolute;
-  top:50px;
-  left:450px;
-  width:75px;
-  height:75px;
+  top:45px;
+  left:600px;
+  width:80px;
+  height:80px;
   border-radius:50%;
   background:#ffd735;
 }
@@ -63,10 +65,10 @@ html,body{
 #grass{
   position:absolute;
   left:0;
-  top:55%;
-  width:6000px;
-  height:45%;
-  background:#76c94d;
+  top:60%;
+  width:12000px;
+  height:40%;
+  background:#78c94d;
 }
 
 /* ================= सड़क ================= */
@@ -74,66 +76,70 @@ html,body{
 #road{
   position:absolute;
   left:0;
-  top:66%;
-  width:6000px;
-  height:34%;
-  background:#555;
-  border-top:7px solid #777;
-  border-bottom:7px solid #333;
+  top:67%;
+  width:12000px;
+  height:33%;
+  background:#505050;
+  border-top:8px solid #777;
+  border-bottom:8px solid #303030;
 }
 
-/* सड़क की बीच वाली लाइन */
+/* सड़क की बीच की लाइन */
 .roadLine{
   position:absolute;
   top:50%;
-  width:130px;
+  width:140px;
   height:10px;
   background:white;
+  border-radius:5px;
 }
 
-/* बहुत सारी सड़क की लाइनें */
-.r1{left:20px}
-.r2{left:250px}
-.r3{left:480px}
-.r4{left:710px}
-.r5{left:940px}
-.r6{left:1170px}
-.r7{left:1400px}
-.r8{left:1630px}
-.r9{left:1860px}
-.r10{left:2090px}
-.r11{left:2320px}
-.r12{left:2550px}
-.r13{left:2780px}
-.r14{left:3010px}
-.r15{left:3240px}
-.r16{left:3470px}
-.r17{left:3700px}
-.r18{left:3930px}
-.r19{left:4160px}
-.r20{left:4390px}
-.r21{left:4620px}
-.r22{left:4850px}
-.r23{left:5080px}
-.r24{left:5310px}
-.r25{left:5540px}
-.r26{left:5770px}
+/* बहुत सारे पॉइंट */
+.roadPoint{
+  position:absolute;
+  top:36%;
+  width:25px;
+  height:25px;
+  border-radius:50%;
+  background:#ffd21c;
+  border:4px solid white;
+  box-shadow:0 0 10px #0006;
+  z-index:5;
+}
 
-/* ================= जगहें ================= */
+/* सड़क लाइनें */
+.l1{left:50px}.l2{left:300px}.l3{left:550px}
+.l4{left:800px}.l5{left:1050px}.l6{left:1300px}
+.l7{left:1550px}.l8{left:1800px}.l9{left:2050px}
+.l10{left:2300px}.l11{left:2550px}.l12{left:2800px}
+.l13{left:3050px}.l14{left:3300px}.l15{left:3550px}
+.l16{left:3800px}.l17{left:4050px}.l18{left:4300px}
+.l19{left:4550px}.l20{left:4800px}.l21{left:5050px}
+.l22{left:5300px}.l23{left:5550px}.l24{left:5800px}
+.l25{left:6050px}.l26{left:6300px}.l27{left:6550px}
+.l28{left:6800px}.l29{left:7050px}.l30{left:7300px}
+.l31{left:7550px}.l32{left:7800px}.l33{left:8050px}
+.l34{left:8300px}.l35{left:8550px}.l36{left:8800px}
+.l37{left:9050px}.l38{left:9300px}.l39{left:9550px}
+.l40{left:9800px}.l41{left:10050px}.l42{left:10300px}
+.l43{left:10550px}.l44{left:10800px}.l45{left:11050px}
+.l46{left:11300px}.l47{left:11550px}.l48{left:11800px}
+
+/* ================= जगह ================= */
 
 .place{
   position:absolute;
-  bottom:34%;
+  bottom:33%;
   text-align:center;
-  font-size:20px;
   font-weight:bold;
+  z-index:10;
 }
 
-/* घर */
+/* गाँव का घर */
 .house{
-  left:150px;
-  width:190px;
-  height:130px;
+  left:180px;
+  width:200px;
+  height:135px;
   background:#d99d65;
   border:5px solid #75482e;
 }
@@ -141,9 +147,9 @@ html,body{
 .houseRoof{
   position:absolute;
   left:-25px;
-  top:-70px;
-  width:230px;
-  height:80px;
+  top:-72px;
+  width:240px;
+  height:82px;
   background:#a94432;
   clip-path:polygon(50% 0,100% 100%,0 100%);
 }
@@ -151,9 +157,9 @@ html,body{
 .door{
   position:absolute;
   bottom:0;
-  left:70px;
-  width:45px;
-  height:75px;
+  left:75px;
+  width:48px;
+  height:78px;
   background:#633d2a;
 }
 
@@ -161,105 +167,146 @@ html,body{
   position:absolute;
   right:18px;
   top:30px;
-  width:45px;
-  height:40px;
+  width:48px;
+  height:42px;
   background:#91e8ff;
   border:5px solid #633d2a;
 }
 
 /* खेत */
 .farm{
-  left:1000px;
-  width:280px;
-  height:120px;
+  left:1500px;
+  width:300px;
+  height:125px;
   background:#a87938;
   border:5px solid #6e481f;
   padding-top:35px;
-  font-size:38px;
+  font-size:35px;
 }
 
 /* दुकान */
 .shop{
-  left:1650px;
-  width:220px;
-  height:125px;
+  left:2800px;
+  width:230px;
+  height:130px;
   background:#f5c35d;
   border:5px solid #805a24;
-  padding-top:45px;
+  padding-top:48px;
+  font-size:24px;
 }
 
 .shopRoof{
   position:absolute;
-  top:-38px;
+  top:-40px;
   left:-5px;
-  width:220px;
-  height:45px;
+  width:230px;
+  height:46px;
   background:#e53935;
 }
 
 /* बाजार */
 .market{
-  left:2350px;
-  width:270px;
-  height:140px;
+  left:4100px;
+  width:300px;
+  height:145px;
   background:#efb74d;
   border:5px solid #76521d;
-  padding-top:50px;
+  padding-top:52px;
+  font-size:24px;
 }
 
 .marketRoof{
   position:absolute;
-  top:-40px;
+  top:-42px;
   left:-5px;
-  width:270px;
-  height:45px;
+  width:300px;
+  height:47px;
   background:#673ab7;
 }
 
 /* शहर */
 .city{
-  left:3150px;
-  width:250px;
-  height:230px;
+  left:5500px;
+  width:300px;
+  height:240px;
   background:#b7c6d2;
   border:5px solid #59646d;
   padding-top:70px;
-  font-size:75px;
+  font-size:80px;
 }
 
 /* बैंक */
 .bank{
-  left:3950px;
-  width:290px;
-  height:160px;
+  left:6900px;
+  width:310px;
+  height:170px;
   background:#eee;
   border:5px solid #555;
   padding-top:45px;
+  font-size:70px;
+}
+
+/* फैक्ट्री */
+.factory{
+  left:8100px;
+  width:350px;
+  height:210px;
+  background:#bdbdbd;
+  border:6px solid #555;
+  padding-top:60px;
   font-size:65px;
+}
+
+/* होटल */
+.hotel{
+  left:9200px;
+  width:340px;
+  height:200px;
+  background:#f2c6a0;
+  border:6px solid #75452e;
+  padding-top:55px;
+  font-size:65px;
+}
+
+/* ऑफिस */
+.office{
+  left:10300px;
+  width:360px;
+  height:230px;
+  background:#b9d4e8;
+  border:6px solid #42617a;
+  padding-top:65px;
+  font-size:70px;
 }
 
 /* बड़ा घर */
 .mansion{
-  left:4800px;
-  width:320px;
-  height:200px;
+  left:11500px;
+  width:400px;
+  height:230px;
   background:#f1dfb8;
   border:6px solid #73552a;
-  padding-top:45px;
-  font-size:80px;
+  padding-top:55px;
+  font-size:85px;
 }
 
 /* ================= आदमी ================= */
 
 #player{
   position:absolute;
-  z-index:50;
+  z-index:100;
   left:300px;
-  top:57%;
+
+  /* आदमी अब सड़क पर */
+  top:65%;
+
   width:55px;
   height:100px;
+
+  transition:left .12s linear;
 }
 
+/* सिर */
 .head{
   position:absolute;
   left:12px;
@@ -271,6 +318,7 @@ html,body{
   border:2px solid #713e28;
 }
 
+/* बाल */
 .hair{
   position:absolute;
   left:10px;
@@ -281,6 +329,7 @@ html,body{
   border-radius:20px 20px 5px 5px;
 }
 
+/* शरीर */
 .body{
   position:absolute;
   left:8px;
@@ -291,6 +340,7 @@ html,body{
   border-radius:8px;
 }
 
+/* हाथ */
 .arm{
   position:absolute;
   top:34px;
@@ -298,11 +348,13 @@ html,body{
   height:32px;
   background:#c98252;
   border-radius:10px;
+  transform-origin:top center;
 }
 
 .arm1{left:0}
 .arm2{right:0}
 
+/* पैर */
 .leg{
   position:absolute;
   top:69px;
@@ -310,12 +362,50 @@ html,body{
   height:28px;
   background:#292929;
   border-radius:8px;
+  transform-origin:top center;
 }
 
 .leg1{left:11px}
 .leg2{right:11px}
 
-/* ================= ऊपर UI ================= */
+/* आदमी चले तो animation */
+#player.walking .leg1{
+  animation:walk1 .22s infinite alternate;
+}
+
+#player.walking .leg2{
+  animation:walk2 .22s infinite alternate;
+}
+
+#player.walking .arm1{
+  animation:arm1 .22s infinite alternate;
+}
+
+#player.walking .arm2{
+  animation:arm2 .22s infinite alternate;
+}
+
+@keyframes walk1{
+  from{transform:rotate(25deg)}
+  to{transform:rotate(-25deg)}
+}
+
+@keyframes walk2{
+  from{transform:rotate(-25deg)}
+  to{transform:rotate(25deg)}
+}
+
+@keyframes arm1{
+  from{transform:rotate(-20deg)}
+  to{transform:rotate(20deg)}
+}
+
+@keyframes arm2{
+  from{transform:rotate(20deg)}
+  to{transform:rotate(-20deg)}
+}
+
+/* ================= UI ================= */
 
 #ui{
   position:fixed;
@@ -345,7 +435,7 @@ html,body{
   left:50%;
   transform:translateX(-50%);
   width:92%;
-  max-width:470px;
+  max-width:500px;
   background:white;
   border-radius:18px;
   padding:12px;
@@ -354,7 +444,7 @@ html,body{
   font-size:17px;
 }
 
-/* जगह */
+/* लोकेशन */
 #location{
   position:fixed;
   z-index:200;
@@ -367,6 +457,20 @@ html,body{
   border-radius:20px;
 }
 
+/* चेकपॉइंट नाम */
+.checkName{
+  position:absolute;
+  top:-38px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#111;
+  color:white;
+  padding:5px 10px;
+  border-radius:10px;
+  white-space:nowrap;
+  font-size:14px;
+}
+
 /* ================= बटन ================= */
 
 #controls{
@@ -377,12 +481,12 @@ html,body{
   width:100%;
   display:flex;
   justify-content:center;
-  gap:12px;
+  gap:10px;
 }
 
 .btn{
   height:62px;
-  min-width:115px;
+  min-width:110px;
   border:0;
   border-radius:20px;
   background:#111;
@@ -393,12 +497,12 @@ html,body{
 }
 
 .forward{
-  min-width:165px;
+  min-width:170px;
   background:#ff9f1c;
   color:#111;
 }
 
-/* काम बटन */
+/* मिशन बटन */
 #work{
   position:fixed;
   z-index:300;
@@ -441,6 +545,23 @@ html,body{
   font-size:17px;
   font-weight:bold;
 }
+
+/* मोबाइल */
+@media(max-width:500px){
+  .stat{
+    padding:8px 9px;
+    font-size:13px;
+  }
+
+  #mission{
+    font-size:15px;
+  }
+
+  #location{
+    top:118px;
+    font-size:14px;
+  }
+}
 </style>
 </head>
 
@@ -457,32 +578,91 @@ html,body{
 <!-- सड़क -->
 <div id="road">
 
-<div class="roadLine r1"></div>
-<div class="roadLine r2"></div>
-<div class="roadLine r3"></div>
-<div class="roadLine r4"></div>
-<div class="roadLine r5"></div>
-<div class="roadLine r6"></div>
-<div class="roadLine r7"></div>
-<div class="roadLine r8"></div>
-<div class="roadLine r9"></div>
-<div class="roadLine r10"></div>
-<div class="roadLine r11"></div>
-<div class="roadLine r12"></div>
-<div class="roadLine r13"></div>
-<div class="roadLine r14"></div>
-<div class="roadLine r15"></div>
-<div class="roadLine r16"></div>
-<div class="roadLine r17"></div>
-<div class="roadLine r18"></div>
-<div class="roadLine r19"></div>
-<div class="roadLine r20"></div>
-<div class="roadLine r21"></div>
-<div class="roadLine r22"></div>
-<div class="roadLine r23"></div>
-<div class="roadLine r24"></div>
-<div class="roadLine r25"></div>
-<div class="roadLine r26"></div>
+<div class="roadLine l1"></div>
+<div class="roadLine l2"></div>
+<div class="roadLine l3"></div>
+<div class="roadLine l4"></div>
+<div class="roadLine l5"></div>
+<div class="roadLine l6"></div>
+<div class="roadLine l7"></div>
+<div class="roadLine l8"></div>
+<div class="roadLine l9"></div>
+<div class="roadLine l10"></div>
+<div class="roadLine l11"></div>
+<div class="roadLine l12"></div>
+<div class="roadLine l13"></div>
+<div class="roadLine l14"></div>
+<div class="roadLine l15"></div>
+<div class="roadLine l16"></div>
+<div class="roadLine l17"></div>
+<div class="roadLine l18"></div>
+<div class="roadLine l19"></div>
+<div class="roadLine l20"></div>
+<div class="roadLine l21"></div>
+<div class="roadLine l22"></div>
+<div class="roadLine l23"></div>
+<div class="roadLine l24"></div>
+<div class="roadLine l25"></div>
+<div class="roadLine l26"></div>
+<div class="roadLine l27"></div>
+<div class="roadLine l28"></div>
+<div class="roadLine l29"></div>
+<div class="roadLine l30"></div>
+<div class="roadLine l31"></div>
+<div class="roadLine l32"></div>
+<div class="roadLine l33"></div>
+<div class="roadLine l34"></div>
+<div class="roadLine l35"></div>
+<div class="roadLine l36"></div>
+<div class="roadLine l37"></div>
+<div class="roadLine l38"></div>
+<div class="roadLine l39"></div>
+<div class="roadLine l40"></div>
+<div class="roadLine l41"></div>
+<div class="roadLine l42"></div>
+<div class="roadLine l43"></div>
+<div class="roadLine l44"></div>
+<div class="roadLine l45"></div>
+<div class="roadLine l46"></div>
+<div class="roadLine l47"></div>
+<div class="roadLine l48"></div>
+
+<!-- चेकपॉइंट -->
+<div class="roadPoint" style="left:1500px">
+<div class="checkName">🌾 खेत</div>
+</div>
+
+<div class="roadPoint" style="left:2800px">
+<div class="checkName">🛒 दुकान</div>
+</div>
+
+<div class="roadPoint" style="left:4100px">
+<div class="checkName">🏪 बाजार</div>
+</div>
+
+<div class="roadPoint" style="left:5500px">
+<div class="checkName">🏙️ शहर</div>
+</div>
+
+<div class="roadPoint" style="left:6900px">
+<div class="checkName">🏦 बैंक</div>
+</div>
+
+<div class="roadPoint" style="left:8100px">
+<div class="checkName">🏭 फैक्ट्री</div>
+</div>
+
+<div class="roadPoint" style="left:9200px">
+<div class="checkName">🏨 होटल</div>
+</div>
+
+<div class="roadPoint" style="left:10300px">
+<div class="checkName">🏢 ऑफिस</div>
+</div>
+
+<div class="roadPoint" style="left:11500px">
+<div class="checkName">💎 बड़ा घर</div>
+</div>
 
 </div>
 
@@ -522,6 +702,24 @@ html,body{
 <div class="place bank">
   🏦
   <div style="font-size:22px">बैंक</div>
+</div>
+
+<!-- फैक्ट्री -->
+<div class="place factory">
+  🏭
+  <div style="font-size:22px">फैक्ट्री</div>
+</div>
+
+<!-- होटल -->
+<div class="place hotel">
+  🏨
+  <div style="font-size:22px">होटल</div>
+</div>
+
+<!-- ऑफिस -->
+<div class="place office">
+  🏢
+  <div style="font-size:22px">ऑफिस</div>
 </div>
 
 <!-- बड़ा घर -->
@@ -568,7 +766,7 @@ html,body{
 </div>
 
 <div id="mission">
-🎯 मिशन 1: दुकान तक जाओ
+🎯 मिशन 1: खेत तक जाओ
 </div>
 
 <div id="location">
@@ -583,11 +781,13 @@ html,body{
 
 <div id="controls">
 
-<button class="btn" onclick="movePlayer(-60)">
+<button class="btn"
+onclick="movePlayer(-100)">
 ⬅️ पीछे
 </button>
 
-<button class="btn forward" onclick="movePlayer(100)">
+<button class="btn forward"
+onclick="movePlayer(120)">
 ➡️ आगे बढ़ो
 </button>
 
@@ -617,13 +817,27 @@ let playerX=300;
 
 let missionIndex=0;
 
+/* बहुत लंबी यात्रा */
 const missions=[
- {x:1650,name:"दुकान",reward:100},
- {x:1000,name:"खेत",reward:150},
- {x:2350,name:"बड़ा बाजार",reward:250},
- {x:3150,name:"शहर",reward:500},
- {x:3950,name:"बैंक",reward:800},
- {x:4800,name:"बड़ा घर",reward:2000}
+
+{x:1500,name:"खेत",reward:150},
+
+{x:2800,name:"दुकान",reward:250},
+
+{x:4100,name:"बड़ा बाजार",reward:400},
+
+{x:5500,name:"शहर",reward:600},
+
+{x:6900,name:"बैंक",reward:900},
+
+{x:8100,name:"फैक्ट्री",reward:1200},
+
+{x:9200,name:"होटल",reward:1600},
+
+{x:10300,name:"ऑफिस",reward:2200},
+
+{x:11500,name:"बड़ा घर",reward:5000}
+
 ];
 
 const player=
@@ -632,29 +846,47 @@ document.getElementById("player");
 const world=
 document.getElementById("world");
 
+
+/* ================= चलना ================= */
+
 function movePlayer(amount){
 
   playerX += amount;
 
   playerX =
   Math.max(
-    80,
-    Math.min(5700,playerX)
+    100,
+    Math.min(
+      11800,
+      playerX
+    )
   );
+
+  /* चलने की animation */
+  player.classList.add("walking");
+
+  clearTimeout(window.walkTimer);
+
+  window.walkTimer=setTimeout(function(){
+
+    player.classList.remove("walking");
+
+  },300);
 
   updatePlayer();
 
   saveGame();
 }
 
+
+/* ================= कैमरा ================= */
+
 function updatePlayer(){
 
   player.style.left =
   playerX+"px";
 
-  /*
-  कैमरा खिलाड़ी के साथ आगे चलेगा
-  */
+  /* खिलाड़ी के साथ दुनिया चलेगी */
 
   let camera =
   window.innerWidth/2-playerX;
@@ -663,7 +895,7 @@ function updatePlayer(){
   Math.min(
     0,
     Math.max(
-      window.innerWidth-6000,
+      window.innerWidth-12000,
       camera
     )
   );
@@ -674,16 +906,19 @@ function updatePlayer(){
   checkMission();
 }
 
+
+/* ================= मिशन ================= */
+
 function checkMission(){
 
   if(missionIndex>=missions.length){
 
     document.getElementById("mission")
-    .textContent =
+    .textContent=
     "🏆 सभी मिशन पूरे! तुम अमीर बन गए!";
 
     document.getElementById("location")
-    .textContent =
+    .textContent=
     "💎 अमीर";
 
     document.getElementById("work")
@@ -692,16 +927,18 @@ function checkMission(){
     return;
   }
 
-  let mission =
+  let mission=
   missions[missionIndex];
 
-  let distance =
-  Math.abs(playerX-mission.x);
+  let distance=
+  Math.abs(
+    playerX-mission.x
+  );
 
-  if(distance<130){
+  if(distance<150){
 
     document.getElementById("location")
-    .textContent =
+    .textContent=
     "📍 "+mission.name;
 
     document.getElementById("work")
@@ -712,43 +949,62 @@ function checkMission(){
     document.getElementById("work")
     .style.display="none";
 
-    if(playerX<700){
+    if(playerX<800){
 
       locationText("🏚️ गाँव");
 
-    }else if(playerX<1350){
+    }else if(playerX<2200){
 
-      locationText("🌾 खेत");
+      locationText("🌾 खेत वाला इलाका");
 
-    }else if(playerX<2000){
+    }else if(playerX<3500){
 
-      locationText("🛒 दुकान");
+      locationText("🛒 दुकान वाला इलाका");
 
-    }else if(playerX<2800){
+    }else if(playerX<4800){
 
       locationText("🏪 बाजार");
 
-    }else if(playerX<3550){
+    }else if(playerX<6200){
 
       locationText("🏙️ शहर");
 
-    }else if(playerX<4400){
+    }else if(playerX<7500){
 
       locationText("🏦 बैंक");
+
+    }else if(playerX<8700){
+
+      locationText("🏭 फैक्ट्री");
+
+    }else if(playerX<9700){
+
+      locationText("🏨 होटल");
+
+    }else if(playerX<11000){
+
+      locationText("🏢 ऑफिस");
 
     }else{
 
       locationText("💎 अमीर इलाका");
 
     }
+
   }
+
 }
+
 
 function locationText(text){
 
   document.getElementById("location")
   .textContent=text;
+
 }
+
+
+/* ================= मिशन पूरा ================= */
 
 function completeMission(){
 
@@ -756,21 +1012,23 @@ function completeMission(){
 
     showPopup(
       "🏆 गेम पूरा!",
-      "तुम गरीब से अमीर बन गए! अगली अपडेट में बाइक और कार आएगी।"
+      "तुम गरीब से अमीर बन गए! 💎"
     );
 
     return;
   }
 
-  let mission =
+  let mission=
   missions[missionIndex];
 
   money += mission.reward;
 
   missionIndex++;
 
-  level =
-  Math.floor(money/300)+1;
+  level=
+  Math.floor(
+    money/500
+  )+1;
 
   document.getElementById("money")
   .textContent=money;
@@ -778,15 +1036,22 @@ function completeMission(){
   document.getElementById("level")
   .textContent=level;
 
-  document.getElementById("mission")
-  .textContent =
-  missionIndex<missions.length
-  ?
-  "🎯 मिशन "+(missionIndex+1)+": "+
-  missions[missionIndex].name+
-  " तक जाओ"
-  :
-  "🏆 सभी मिशन पूरे!";
+  if(missionIndex<missions.length){
+
+    document.getElementById("mission")
+    .textContent=
+    "🎯 मिशन "+
+    (missionIndex+1)+
+    ": "+
+    missions[missionIndex].name+
+    " तक जाओ";
+
+  }else{
+
+    document.getElementById("mission")
+    .textContent=
+    "🏆 सभी मिशन पूरे!";
+  }
 
   document.getElementById("work")
   .style.display="none";
@@ -796,9 +1061,12 @@ function completeMission(){
   showPopup(
     "🎉 मिशन पूरा!",
     "₹"+mission.reward+
-    " मिले!\nअब अगली जगह पर जाओ।"
+    " मिले! 💰\n\nअब अगली जगह की ओर जाओ।"
   );
 }
+
+
+/* ================= Popup ================= */
 
 function showPopup(title,text){
 
@@ -812,42 +1080,67 @@ function showPopup(title,text){
   .style.display="block";
 }
 
+
 function closePopup(){
 
   document.getElementById("popup")
   .style.display="none";
 }
 
+
+/* ================= SAVE ================= */
+
 function saveGame(){
 
   localStorage.setItem(
     "garibGame",
     JSON.stringify({
+
       money:money,
+
       level:level,
+
       food:food,
+
       playerX:playerX,
+
       missionIndex:missionIndex
+
     })
   );
 }
 
+
+/* ================= LOAD ================= */
+
 function loadGame(){
 
-  let data =
-  localStorage.getItem("garibGame");
+  let data=
+  localStorage.getItem(
+    "garibGame"
+  );
 
   if(!data)return;
 
   try{
 
-    data=JSON.parse(data);
+    data=
+    JSON.parse(data);
 
-    money=data.money||0;
-    level=data.level||1;
-    food=data.food||3;
-    playerX=data.playerX||300;
-    missionIndex=data.missionIndex||0;
+    money=
+    data.money||0;
+
+    level=
+    data.level||1;
+
+    food=
+    data.food||3;
+
+    playerX=
+    data.playerX||300;
+
+    missionIndex=
+    data.missionIndex||0;
 
   }catch(e){}
 
@@ -858,6 +1151,7 @@ function loadGame(){
   .textContent=level;
 }
 
+
 /* शुरुआत */
 
 loadGame();
@@ -867,4 +1161,4 @@ updatePlayer();
 </script>
 
 </body>
-</html>
+  </html>
