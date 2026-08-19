@@ -1,13 +1,377 @@
-<!-- आगे-पीछे चलने के बटन -->
-<div id="controls">
-  <button class="btn" onclick="movePlayer(-40)">⬅️ पीछे</button>
-  <button class="btn forward" onclick="movePlayer(100)">➡️ आगे बढ़ो</button>
-</div>
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+
+<title>गरीब से अमीर गेम</title>
 
 <style>
+*{
+  box-sizing:border-box;
+  user-select:none;
+}
+
+html,body{
+  margin:0;
+  padding:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  font-family:Arial,sans-serif;
+}
+
+#game{
+  position:relative;
+  width:100vw;
+  height:100vh;
+  overflow:hidden;
+  background:#75c94d;
+}
+
+/* पूरी दुनिया */
+#world{
+  position:absolute;
+  left:0;
+  top:0;
+  width:6000px;
+  height:100%;
+}
+
+/* आसमान */
+#sky{
+  position:absolute;
+  top:0;
+  left:0;
+  width:6000px;
+  height:55%;
+  background:linear-gradient(#56c7fa,#d9f6ff);
+}
+
+/* सूरज */
+#sun{
+  position:absolute;
+  top:50px;
+  left:450px;
+  width:75px;
+  height:75px;
+  border-radius:50%;
+  background:#ffd735;
+}
+
+/* जमीन */
+#grass{
+  position:absolute;
+  left:0;
+  top:55%;
+  width:6000px;
+  height:45%;
+  background:#76c94d;
+}
+
+/* ================= सड़क ================= */
+
+#road{
+  position:absolute;
+  left:0;
+  top:66%;
+  width:6000px;
+  height:34%;
+  background:#555;
+  border-top:7px solid #777;
+  border-bottom:7px solid #333;
+}
+
+/* सड़क की बीच वाली लाइन */
+.roadLine{
+  position:absolute;
+  top:50%;
+  width:130px;
+  height:10px;
+  background:white;
+}
+
+/* बहुत सारी सड़क की लाइनें */
+.r1{left:20px}
+.r2{left:250px}
+.r3{left:480px}
+.r4{left:710px}
+.r5{left:940px}
+.r6{left:1170px}
+.r7{left:1400px}
+.r8{left:1630px}
+.r9{left:1860px}
+.r10{left:2090px}
+.r11{left:2320px}
+.r12{left:2550px}
+.r13{left:2780px}
+.r14{left:3010px}
+.r15{left:3240px}
+.r16{left:3470px}
+.r17{left:3700px}
+.r18{left:3930px}
+.r19{left:4160px}
+.r20{left:4390px}
+.r21{left:4620px}
+.r22{left:4850px}
+.r23{left:5080px}
+.r24{left:5310px}
+.r25{left:5540px}
+.r26{left:5770px}
+
+/* ================= जगहें ================= */
+
+.place{
+  position:absolute;
+  bottom:34%;
+  text-align:center;
+  font-size:20px;
+  font-weight:bold;
+}
+
+/* घर */
+.house{
+  left:150px;
+  width:190px;
+  height:130px;
+  background:#d99d65;
+  border:5px solid #75482e;
+}
+
+.houseRoof{
+  position:absolute;
+  left:-25px;
+  top:-70px;
+  width:230px;
+  height:80px;
+  background:#a94432;
+  clip-path:polygon(50% 0,100% 100%,0 100%);
+}
+
+.door{
+  position:absolute;
+  bottom:0;
+  left:70px;
+  width:45px;
+  height:75px;
+  background:#633d2a;
+}
+
+.window{
+  position:absolute;
+  right:18px;
+  top:30px;
+  width:45px;
+  height:40px;
+  background:#91e8ff;
+  border:5px solid #633d2a;
+}
+
+/* खेत */
+.farm{
+  left:1000px;
+  width:280px;
+  height:120px;
+  background:#a87938;
+  border:5px solid #6e481f;
+  padding-top:35px;
+  font-size:38px;
+}
+
+/* दुकान */
+.shop{
+  left:1650px;
+  width:220px;
+  height:125px;
+  background:#f5c35d;
+  border:5px solid #805a24;
+  padding-top:45px;
+}
+
+.shopRoof{
+  position:absolute;
+  top:-38px;
+  left:-5px;
+  width:220px;
+  height:45px;
+  background:#e53935;
+}
+
+/* बाजार */
+.market{
+  left:2350px;
+  width:270px;
+  height:140px;
+  background:#efb74d;
+  border:5px solid #76521d;
+  padding-top:50px;
+}
+
+.marketRoof{
+  position:absolute;
+  top:-40px;
+  left:-5px;
+  width:270px;
+  height:45px;
+  background:#673ab7;
+}
+
+/* शहर */
+.city{
+  left:3150px;
+  width:250px;
+  height:230px;
+  background:#b7c6d2;
+  border:5px solid #59646d;
+  padding-top:70px;
+  font-size:75px;
+}
+
+/* बैंक */
+.bank{
+  left:3950px;
+  width:290px;
+  height:160px;
+  background:#eee;
+  border:5px solid #555;
+  padding-top:45px;
+  font-size:65px;
+}
+
+/* बड़ा घर */
+.mansion{
+  left:4800px;
+  width:320px;
+  height:200px;
+  background:#f1dfb8;
+  border:6px solid #73552a;
+  padding-top:45px;
+  font-size:80px;
+}
+
+/* ================= आदमी ================= */
+
+#player{
+  position:absolute;
+  z-index:50;
+  left:300px;
+  top:57%;
+  width:55px;
+  height:100px;
+}
+
+.head{
+  position:absolute;
+  left:12px;
+  top:0;
+  width:32px;
+  height:32px;
+  background:#c98252;
+  border-radius:50%;
+  border:2px solid #713e28;
+}
+
+.hair{
+  position:absolute;
+  left:10px;
+  top:-4px;
+  width:36px;
+  height:15px;
+  background:#222;
+  border-radius:20px 20px 5px 5px;
+}
+
+.body{
+  position:absolute;
+  left:8px;
+  top:31px;
+  width:40px;
+  height:40px;
+  background:#2879c7;
+  border-radius:8px;
+}
+
+.arm{
+  position:absolute;
+  top:34px;
+  width:11px;
+  height:32px;
+  background:#c98252;
+  border-radius:10px;
+}
+
+.arm1{left:0}
+.arm2{right:0}
+
+.leg{
+  position:absolute;
+  top:69px;
+  width:13px;
+  height:28px;
+  background:#292929;
+  border-radius:8px;
+}
+
+.leg1{left:11px}
+.leg2{right:11px}
+
+/* ================= ऊपर UI ================= */
+
+#ui{
+  position:fixed;
+  z-index:200;
+  top:10px;
+  left:10px;
+  right:10px;
+  display:flex;
+  justify-content:space-between;
+  gap:6px;
+}
+
+.stat{
+  background:#102638;
+  color:white;
+  padding:10px 12px;
+  border-radius:16px;
+  font-weight:bold;
+  font-size:15px;
+}
+
+/* मिशन */
+#mission{
+  position:fixed;
+  z-index:200;
+  top:65px;
+  left:50%;
+  transform:translateX(-50%);
+  width:92%;
+  max-width:470px;
+  background:white;
+  border-radius:18px;
+  padding:12px;
+  text-align:center;
+  font-weight:bold;
+  font-size:17px;
+}
+
+/* जगह */
+#location{
+  position:fixed;
+  z-index:200;
+  top:120px;
+  left:50%;
+  transform:translateX(-50%);
+  padding:8px 18px;
+  background:#000b;
+  color:white;
+  border-radius:20px;
+}
+
+/* ================= बटन ================= */
+
 #controls{
   position:fixed;
-  z-index:350;
+  z-index:300;
   bottom:15px;
   left:0;
   width:100%;
@@ -17,38 +381,490 @@
 }
 
 .btn{
-  height:60px;
-  min-width:110px;
-  padding:0 15px;
+  height:62px;
+  min-width:115px;
   border:0;
-  border-radius:18px;
+  border-radius:20px;
   background:#111;
   color:white;
   font-size:17px;
   font-weight:bold;
+  box-shadow:0 4px 8px #0005;
 }
 
 .forward{
-  min-width:160px;
+  min-width:165px;
   background:#ff9f1c;
   color:#111;
 }
 
-.btn:active{
-  transform:scale(.92);
+/* काम बटन */
+#work{
+  position:fixed;
+  z-index:300;
+  display:none;
+  bottom:90px;
+  left:50%;
+  transform:translateX(-50%);
+  border:0;
+  padding:14px 30px;
+  border-radius:20px;
+  background:#20b957;
+  color:white;
+  font-size:18px;
+  font-weight:bold;
+}
+
+/* popup */
+#popup{
+  position:fixed;
+  z-index:500;
+  display:none;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:88%;
+  max-width:370px;
+  background:white;
+  border-radius:22px;
+  padding:25px;
+  text-align:center;
+  box-shadow:0 10px 40px #0008;
+}
+
+#popup button{
+  border:0;
+  padding:12px 28px;
+  border-radius:12px;
+  background:#159447;
+  color:white;
+  font-size:17px;
+  font-weight:bold;
 }
 </style>
+</head>
+
+<body>
+
+<div id="game">
+
+<div id="world">
+
+<div id="sky"></div>
+<div id="sun"></div>
+<div id="grass"></div>
+
+<!-- सड़क -->
+<div id="road">
+
+<div class="roadLine r1"></div>
+<div class="roadLine r2"></div>
+<div class="roadLine r3"></div>
+<div class="roadLine r4"></div>
+<div class="roadLine r5"></div>
+<div class="roadLine r6"></div>
+<div class="roadLine r7"></div>
+<div class="roadLine r8"></div>
+<div class="roadLine r9"></div>
+<div class="roadLine r10"></div>
+<div class="roadLine r11"></div>
+<div class="roadLine r12"></div>
+<div class="roadLine r13"></div>
+<div class="roadLine r14"></div>
+<div class="roadLine r15"></div>
+<div class="roadLine r16"></div>
+<div class="roadLine r17"></div>
+<div class="roadLine r18"></div>
+<div class="roadLine r19"></div>
+<div class="roadLine r20"></div>
+<div class="roadLine r21"></div>
+<div class="roadLine r22"></div>
+<div class="roadLine r23"></div>
+<div class="roadLine r24"></div>
+<div class="roadLine r25"></div>
+<div class="roadLine r26"></div>
+
+</div>
+
+<!-- घर -->
+<div class="place house">
+  <div class="houseRoof"></div>
+  <div class="door"></div>
+  <div class="window"></div>
+  🏚️
+</div>
+
+<!-- खेत -->
+<div class="place farm">
+  🌾🌾🌾<br>
+  खेत
+</div>
+
+<!-- दुकान -->
+<div class="place shop">
+  <div class="shopRoof"></div>
+  🛒 दुकान
+</div>
+
+<!-- बाजार -->
+<div class="place market">
+  <div class="marketRoof"></div>
+  🏪 बड़ा बाजार
+</div>
+
+<!-- शहर -->
+<div class="place city">
+  🏙️
+  <div style="font-size:22px">शहर</div>
+</div>
+
+<!-- बैंक -->
+<div class="place bank">
+  🏦
+  <div style="font-size:22px">बैंक</div>
+</div>
+
+<!-- बड़ा घर -->
+<div class="place mansion">
+  🏠
+  <div style="font-size:23px">मेरा बड़ा घर</div>
+</div>
+
+</div>
+
+<!-- आदमी -->
+<div id="player">
+
+<div class="head"></div>
+<div class="hair"></div>
+<div class="body"></div>
+
+<div class="arm arm1"></div>
+<div class="arm arm2"></div>
+
+<div class="leg leg1"></div>
+<div class="leg leg2"></div>
+
+</div>
+
+</div>
+
+<!-- UI -->
+
+<div id="ui">
+
+<div class="stat">
+💰 ₹<span id="money">0</span>
+</div>
+
+<div class="stat">
+⭐ लेवल <span id="level">1</span>
+</div>
+
+<div class="stat">
+🍚 <span id="food">3</span>
+</div>
+
+</div>
+
+<div id="mission">
+🎯 मिशन 1: दुकान तक जाओ
+</div>
+
+<div id="location">
+🏚️ गाँव
+</div>
+
+<button id="work" onclick="completeMission()">
+🎯 मिशन पूरा करो
+</button>
+
+<!-- चलने के बटन -->
+
+<div id="controls">
+
+<button class="btn" onclick="movePlayer(-60)">
+⬅️ पीछे
+</button>
+
+<button class="btn forward" onclick="movePlayer(100)">
+➡️ आगे बढ़ो
+</button>
+
+</div>
+
+<!-- popup -->
+
+<div id="popup">
+
+<h2 id="popupTitle"></h2>
+
+<p id="popupText"></p>
+
+<button onclick="closePopup()">
+ठीक है 👍
+</button>
+
+</div>
 
 <script>
+
+let money=0;
+let level=1;
+let food=3;
+
+let playerX=300;
+
+let missionIndex=0;
+
+const missions=[
+ {x:1650,name:"दुकान",reward:100},
+ {x:1000,name:"खेत",reward:150},
+ {x:2350,name:"बड़ा बाजार",reward:250},
+ {x:3150,name:"शहर",reward:500},
+ {x:3950,name:"बैंक",reward:800},
+ {x:4800,name:"बड़ा घर",reward:2000}
+];
+
+const player=
+document.getElementById("player");
+
+const world=
+document.getElementById("world");
+
 function movePlayer(amount){
+
   playerX += amount;
 
-  playerX = Math.max(
-    50,
-    Math.min(4900, playerX)
+  playerX =
+  Math.max(
+    80,
+    Math.min(5700,playerX)
   );
 
   updatePlayer();
+
   saveGame();
 }
+
+function updatePlayer(){
+
+  player.style.left =
+  playerX+"px";
+
+  /*
+  कैमरा खिलाड़ी के साथ आगे चलेगा
+  */
+
+  let camera =
+  window.innerWidth/2-playerX;
+
+  camera =
+  Math.min(
+    0,
+    Math.max(
+      window.innerWidth-6000,
+      camera
+    )
+  );
+
+  world.style.left =
+  camera+"px";
+
+  checkMission();
+}
+
+function checkMission(){
+
+  if(missionIndex>=missions.length){
+
+    document.getElementById("mission")
+    .textContent =
+    "🏆 सभी मिशन पूरे! तुम अमीर बन गए!";
+
+    document.getElementById("location")
+    .textContent =
+    "💎 अमीर";
+
+    document.getElementById("work")
+    .style.display="block";
+
+    return;
+  }
+
+  let mission =
+  missions[missionIndex];
+
+  let distance =
+  Math.abs(playerX-mission.x);
+
+  if(distance<130){
+
+    document.getElementById("location")
+    .textContent =
+    "📍 "+mission.name;
+
+    document.getElementById("work")
+    .style.display="block";
+
+  }else{
+
+    document.getElementById("work")
+    .style.display="none";
+
+    if(playerX<700){
+
+      locationText("🏚️ गाँव");
+
+    }else if(playerX<1350){
+
+      locationText("🌾 खेत");
+
+    }else if(playerX<2000){
+
+      locationText("🛒 दुकान");
+
+    }else if(playerX<2800){
+
+      locationText("🏪 बाजार");
+
+    }else if(playerX<3550){
+
+      locationText("🏙️ शहर");
+
+    }else if(playerX<4400){
+
+      locationText("🏦 बैंक");
+
+    }else{
+
+      locationText("💎 अमीर इलाका");
+
+    }
+  }
+}
+
+function locationText(text){
+
+  document.getElementById("location")
+  .textContent=text;
+}
+
+function completeMission(){
+
+  if(missionIndex>=missions.length){
+
+    showPopup(
+      "🏆 गेम पूरा!",
+      "तुम गरीब से अमीर बन गए! अगली अपडेट में बाइक और कार आएगी।"
+    );
+
+    return;
+  }
+
+  let mission =
+  missions[missionIndex];
+
+  money += mission.reward;
+
+  missionIndex++;
+
+  level =
+  Math.floor(money/300)+1;
+
+  document.getElementById("money")
+  .textContent=money;
+
+  document.getElementById("level")
+  .textContent=level;
+
+  document.getElementById("mission")
+  .textContent =
+  missionIndex<missions.length
+  ?
+  "🎯 मिशन "+(missionIndex+1)+": "+
+  missions[missionIndex].name+
+  " तक जाओ"
+  :
+  "🏆 सभी मिशन पूरे!";
+
+  document.getElementById("work")
+  .style.display="none";
+
+  saveGame();
+
+  showPopup(
+    "🎉 मिशन पूरा!",
+    "₹"+mission.reward+
+    " मिले!\nअब अगली जगह पर जाओ।"
+  );
+}
+
+function showPopup(title,text){
+
+  document.getElementById("popupTitle")
+  .textContent=title;
+
+  document.getElementById("popupText")
+  .textContent=text;
+
+  document.getElementById("popup")
+  .style.display="block";
+}
+
+function closePopup(){
+
+  document.getElementById("popup")
+  .style.display="none";
+}
+
+function saveGame(){
+
+  localStorage.setItem(
+    "garibGame",
+    JSON.stringify({
+      money:money,
+      level:level,
+      food:food,
+      playerX:playerX,
+      missionIndex:missionIndex
+    })
+  );
+}
+
+function loadGame(){
+
+  let data =
+  localStorage.getItem("garibGame");
+
+  if(!data)return;
+
+  try{
+
+    data=JSON.parse(data);
+
+    money=data.money||0;
+    level=data.level||1;
+    food=data.food||3;
+    playerX=data.playerX||300;
+    missionIndex=data.missionIndex||0;
+
+  }catch(e){}
+
+  document.getElementById("money")
+  .textContent=money;
+
+  document.getElementById("level")
+  .textContent=level;
+}
+
+/* शुरुआत */
+
+loadGame();
+
+updatePlayer();
+
 </script>
+
+</body>
+</html>
