@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>गरीब से अमीर</title>
+
+<style>
+*{box-sizing:border-box;user-select:none}
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;font-family:Arial}
+#game{position:relative;width:100vw;height:100vh;overflow:hidden;background:#79c34f}
+#sky{position:absolute;top:0;width:100%;height:43%;background:linear-gradient(#63caff,#d5f4ff)}
+#sun{position:absolute;right:25px;top:45px;width:65px;height:65px;border-radius:50%;background:#ffd83d}
+#ground{position:absolute;bottom:0;width:100%;height:59%;background:#78c34f}
+#road{position:absolute;bottom:0;width:100%;height:32%;background:#555;border-top:5px solid #777}
+.roadLine{position:absolute;top:50%;width:80px;height:7px;background:#fff}
+.r1{left:5%}.r2{left:38%}.r3{left:71%}
+
+#house{
+position:absolute;left:7%;bottom:31%;width:135px;height:105px;
+background:#d99b65;border:4px solid #8b5637
+}
+#roof{
+position:absolute;left:-14px;top:-48px;width:155px;height:70px;
+background:#a74432;clip-path:polygon(50% 0,100% 100%,0 100%)
+}
+#door{
+position:absolute;width:35px;height:55px;bottom:0;left:48px;background:#75462e
+}
+#window{
+position:absolute;width:35px;height:30px;top:20px;right:12px;
+background:#9ee9ff;border:4px solid #70452d
+}
+
+#shop{
+position:absolute;right:5%;bottom:31%;width:145px;height:90px;
+background:#f4c45f;border:4px solid #865d29
+}
+#shopRoof{
+position:absolute;left:-5px;top:-30px;width:145px;height:35px;background:#e53935
+}
+#shopText{text-align:center;font-weight:bold;margin-top:28px;font-size:18px}
+
+#player{
+position:absolute;left:50%;top:60%;width:45px;height:80px;
+transform:translateX(-50%);z-index:20
+}
+.head{
+position:absolute;top:0;left:9px;width:28px;height:28px;
+background:#c98252;border-radius:50%;border:2px solid #743f28
+}
+.hair{
+position:absolute;top:-3px;left:8px;width:30px;height:13px;
+background:#222;border-radius:15px 15px 4px 4px
+}
+.body{
+position:absolute;top:28px;left:6px;width:34px;height:34px;
+background:#2876c7;border-radius:8px
+}
+.arm{
+position:absolute;top:31px;width:9px;height:30px;
+background:#c98252;border-radius:10px
+}
+.arm.left{left:0}.arm.right{right:0}
+.leg{
+position:absolute;top:60px;width:11px;height:22px;
+background:#333;border-radius:5px
+}
+.leg.left{left:10px}.leg.right{right:10px}
+
+#ui{
+position:absolute;z-index:100;top:10px;left:10px;right:10px;
+display:flex;justify-content:space-between;gap:5px
+}
+.stat{
+background:rgba(0,0,0,.75);color:#fff;padding:8px 9px;
+border-radius:12px;font-size:14px;font-weight:bold
+}
+#mission{
+position:absolute;z-index:90;top:60px;left:50%;
+transform:translateX(-50%);width:92%;max-width:420px;
+background:#fff;border-radius:15px;padding:9px;text-align:center;
+font-weight:bold
+}
+#action{
+position:absolute;z-index:210;bottom:90px;left:50%;
+transform:translateX(-50%);background:#ff9f1c;border:0;
+border-radius:18px;padding:12px 24px;font-size:17px;font-weight:bold;
+display:none
+}
+#controls{
+position:absolute;z-index:200;bottom:15px;left:0;width:100%;
+display:flex;justify-content:center;gap:10px
+}
+.btn{
+width:68px;height:58px;border:0;border-radius:17px;
+background:rgba(0,0,0,.8);color:#fff;font-size:24px;font-weight:bold
+}
+#popup{
+position:absolute;z-index:500;display:none;left:50%;top:50%;
+transform:translate(-50%,-50%);width:85%;max-width:350px;
+background:#fff;border-radius:20px;padding:20px;text-align:center;
+box-shadow:0 10px 30px #0008
+}
+#popup button{
+border:0;background:#20a84b;color:#fff;padding:12px 25px;
+border-radius:12px;font-size:17px;font-weight:bold
+}
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+<div id="sky"></div>
+<div id="sun"></div>
+<div id="ground"></div>
+
+<div id="road">
+<div class="roadLine r1"></div>
+<div class="roadLine r2"></div>
+<div class="roadLine r3"></div>
+</div>
+
+<div id="house">
+<div id="roof"></div>
+<div id="door"></div>
+<div id="window"></div>
+</div>
+
+<div id="shop">
+<div id="shopRoof"></div>
+<div id="shopText">छोटी दुकान</div>
+</div>
+
+<div id="player">
+<div class="head"></div>
+<div class="hair"></div>
+<div class="body"></div>
+<div class="arm left"></div>
+<div class="arm right"></div>
+<div class="leg left"></div>
+<div class="leg right"></div>
+</div>
+
+<div id="ui">
+<div class="stat">💰 ₹<span id="money">0</span></div>
+<div class="stat">⭐ लेवल <span id="level">1</span></div>
+<div class="stat">🍚 <span id="food">3</span></div>
+</div>
+
+<div id="mission">🎯 मिशन: ₹100 कमाओ</div>
+
+<button id="action">💼 काम करो</button>
+
+<div id="controls">
+<button class="btn" onclick="move(-25,0)">⬅️</button>
+<button class="btn" onclick="move(0,-25)">⬆️</button>
+<button class="btn" onclick="move(0,25)">⬇️</button>
+<button class="btn" onclick="move(25,0)">➡️</button>
+</div>
+
+<div id="popup">
+<h2 id="popupTitle">मिशन पूरा!</h2>
+<p id="popupText"></p>
+<button onclick="closePopup()">ठीक है 👍</button>
+</div>
+
+</div>
+
+<script>
+
+let money=0;
+let food=3;
+let level=1;
+
+let playerX=window.innerWidth/2;
+let playerY=window.innerHeight*.60;
+
+const player=document.getElementById("player");
+const moneyText=document.getElementById("money");
+const foodText=document.getElementById("food");
+const levelText=document.getElementById("level");
+const action=document.getElementById("action");
+const mission=document.getElementById("mission");
+
+function updatePlayer(){
+
+playerX=Math.max(20,Math.min(window.innerWidth-65,playerX));
+
+playerY=Math.max(
+window.innerHeight*.43,
+Math.min(window.innerHeight*.72,playerY)
+);
+
+player.style.left=playerX+"px";
+player.style.top=playerY+"px";
+}
+
+function move(x,y){
+
+playerX+=x;
+playerY+=y;
+
+updatePlayer();
+checkArea();
+}
+
+function checkArea(){
+
+let nearShop=
+playerX>window.innerWidth*.65 &&
+playerY>window.innerHeight*.48;
+
+let nearHouse=
+playerX<200 &&
+playerY>window.innerHeight*.48;
+
+if(nearShop){
+
+action.style.display="block";
+action.innerHTML="💼 काम करो";
+
+action.onclick=work;
+
+}else if(nearHouse){
+
+action.style.display="block";
+action.innerHTML="🍚 खाना खाओ";
+
+action.onclick=eat;
+
+}else{
+
+action.style.display="none";
+}
+}
+
+function work(){
+
+money+=20;
+moneyText.textContent=money;
+
+if(money>=100 && money-20<100){
+
+showPopup(
+"🎉 मिशन पूरा!",
+"बहुत बढ़िया! तुमने ₹100 कमा लिए। अब अगला लक्ष्य ₹300 है।"
+);
+}
+
+updateMission();
+checkLevel();
+}
+
+function eat(){
+
+if(food<=0){
+
+showPopup(
+"😟 खाना खत्म",
+"पहले काम करके पैसे कमाओ।"
+);
+
+return;
+}
+
+food--;
+foodText.textContent=food;
+
+showPopup(
+"🍚 खाना खाया",
+"अब तुम फिर से काम कर सकते हो।"
+);
+}
+
+function updateMission(){
+
+if(money<100){
+
+mission.innerHTML=
+"🎯 मिशन: ₹100 कमाओ ("+money+"/100)";
+
+}else if(money<300){
+
+mission.innerHTML=
+"🎯 मिशन: ₹300 कमाओ ("+money+"/300)";
+
+}else if(money<500){
+
+mission.innerHTML=
+"🎯 मिशन: ₹500 कमाओ ("+money+"/500)";
+
+}else{
+
+mission.innerHTML=
+"🏆 गरीब से अमीर बनने की शुरुआत हो गई!";
+}
+}
+
+function checkLevel(){
+
+let newLevel=Math.floor(money/200)+1;
+
+if(newLevel>level){
+
+level=newLevel;
+
+levelText.textContent=level;
+
+showPopup(
+"⭐ LEVEL UP!",
+"बधाई हो! आपका लेवल "+level+" हो गया।"
+);
+}
+}
+
+function showPopup(title,text){
+
+document.getElementById("popupTitle").textContent=title;
+document.getElementById("popupText").textContent=text;
+document.getElementById("popup").style.display="block";
+}
+
+function closePopup(){
+
+document.getElementById("popup").style.display="none";
+}
+
+window.addEventListener("resize",updatePlayer);
+
+updatePlayer();
+updateMission();
+
+</script>
+
+</body>
+  </html>
