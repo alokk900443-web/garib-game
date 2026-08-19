@@ -2,1336 +2,810 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-<title>Cartoon Police Chase 3D</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Cartoon Police Chase</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  user-select:none;
-  -webkit-user-select:none;
-}
-
+*{box-sizing:border-box}
 html,body{
-  margin:0;
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  background:#65c9ff;
-  font-family:Arial,sans-serif;
+ margin:0;
+ padding:0;
+ width:100%;
+ height:100%;
+ overflow:hidden;
+ font-family:Arial,sans-serif;
+ background:#55c9ff;
 }
-
-#game{
-  position:fixed;
-  inset:0;
+canvas{
+ display:block;
+ width:100%;
+ height:100%;
 }
-
 #hud{
-  position:fixed;
-  top:10px;
-  left:10px;
-  right:10px;
-  z-index:10;
-  display:flex;
-  justify-content:space-between;
-  color:white;
-  font-size:19px;
-  font-weight:900;
-  text-shadow:2px 3px 5px #000;
+ position:fixed;
+ top:8px;
+ left:10px;
+ right:10px;
+ z-index:10;
+ display:flex;
+ justify-content:space-between;
+ color:white;
+ font-size:22px;
+ font-weight:bold;
+ text-shadow:2px 2px 4px #000;
 }
-
 #mission{
-  position:fixed;
-  top:52px;
-  left:50%;
-  transform:translateX(-50%);
-  z-index:10;
-  background:#222d;
-  color:#fff;
-  padding:9px 16px;
-  border-radius:20px;
-  font-weight:bold;
-  white-space:nowrap;
+ position:fixed;
+ top:55px;
+ left:50%;
+ transform:translateX(-50%);
+ background:#111d;
+ color:white;
+ padding:10px 18px;
+ border-radius:25px;
+ z-index:10;
+ font-size:18px;
+ font-weight:bold;
 }
-
-#controls{
-  position:fixed;
-  bottom:18px;
-  left:0;
-  right:0;
-  z-index:20;
-  display:flex;
-  justify-content:space-between;
-  padding:0 20px;
+#menu,#over{
+ position:fixed;
+ inset:0;
+ z-index:30;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ background:#0008;
 }
-
-.btn{
-  width:72px;
-  height:62px;
-  border:3px solid #222;
-  border-radius:20px;
-  background:#fff;
-  font-size:29px;
-  box-shadow:0 5px 12px #0008;
-}
-
-#jump{
-  position:fixed;
-  left:50%;
-  transform:translateX(-50%);
-  bottom:18px;
-}
-
-.screen{
-  position:fixed;
-  inset:0;
-  z-index:50;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:#000b;
-  color:#fff;
-  text-align:center;
-}
-
 .box{
-  width:90%;
-  max-width:380px;
-  background:#171717;
-  border:3px solid #ffd21c;
-  padding:24px;
-  border-radius:28px;
-  box-shadow:0 10px 40px #000;
+ width:90%;
+ max-width:390px;
+ padding:25px;
+ text-align:center;
+ background:#171717;
+ color:white;
+ border:4px solid #ffd21c;
+ border-radius:28px;
 }
-
-.play{
-  width:100%;
-  padding:15px;
-  border:0;
-  border-radius:16px;
-  background:#ffd21c;
-  color:#111;
-  font-size:20px;
-  font-weight:900;
+.box h1{
+ font-size:34px;
+ margin:5px 0 20px;
 }
+.box p{
+ font-size:18px;
+ line-height:1.6;
+}
+button{
+ border:0;
+ border-radius:18px;
+ background:#ffd21c;
+ color:#111;
+ font-size:22px;
+ font-weight:bold;
+ padding:16px 30px;
+}
+#over{display:none}
 
-#gameOver{
-  display:none;
+.controls{
+ position:fixed;
+ left:0;
+ right:0;
+ bottom:20px;
+ z-index:20;
+ display:flex;
+ justify-content:space-between;
+ padding:0 25px;
+}
+.ctrl{
+ width:70px;
+ height:65px;
+ padding:0;
+ background:#fff;
+ border:3px solid #222;
+ font-size:30px;
+ opacity:.9;
 }
 </style>
 </head>
 
 <body>
 
-<div id="game"></div>
+<canvas id="game"></canvas>
 
 <div id="hud">
-  <div>🏆 <span id="score">0</span></div>
-  <div>🪙 <span id="coins">0</span></div>
+ <div>🏆 Score: <span id="score">0</span></div>
+ <div>🪙 Coins: <span id="coins">0</span></div>
 </div>
 
 <div id="mission">
-🎯 मिशन: 20 Coins जमा करो
+ 🎯 Mission: 20 Coins (0/20)
 </div>
 
-<div id="controls">
-  <button class="btn" id="left">⬅️</button>
-  <button class="btn" id="jump">⬆️</button>
-  <button class="btn" id="right">➡️</button>
+<div id="menu">
+ <div class="box">
+  <h1>🏃 CARTOON RUNNER</h1>
+
+  <p>🚆 Train से बचो</p>
+  <p>🌳 पेड़ों के बीच दौड़ो</p>
+  <p>🪙 Coins जमा करो</p>
+  <p>👮 Police से बचो</p>
+
+  <button id="startBtn">▶️ GAME START</button>
+ </div>
 </div>
 
-<div class="screen" id="startScreen">
-  <div class="box">
-    <h1>🏃‍♂️ CARTOON RUNNER</h1>
+<div id="over">
+ <div class="box">
+  <h1>🚨 GAME OVER</h1>
 
-    <p>
-      🚆 ट्रेन से बचो<br>
-      🌳 पेड़ों के बीच दौड़ो<br>
-      🪙 Coins जमा करो<br>
-      👮 Police से बचो
-    </p>
+  <p>👮 Police ने पकड़ लिया!</p>
 
-    <p>
-      आपका character अपने-आप लगाया जाएगा।
-    </p>
+  <p>
+   🏆 Score:
+   <b id="finalScore">0</b>
+  </p>
 
-    <button class="play" id="start">
-      ▶️ GAME START
-    </button>
-  </div>
+  <p>
+   🪙 Coins:
+   <b id="finalCoins">0</b>
+  </p>
+
+  <button id="restartBtn">🔄 फिर से खेलें</button>
+ </div>
 </div>
 
-<div class="screen" id="gameOver">
-  <div class="box">
-    <h1>🚨 GAME OVER</h1>
-
-    <p>👮 Police ने पकड़ लिया!</p>
-
-    <p>🏆 Score: <b id="finalScore">0</b></p>
-    <p>🪙 Coins: <b id="finalCoins">0</b></p>
-
-    <button class="play" id="restart">
-      🔄 फिर से खेलें
-    </button>
-  </div>
+<div class="controls">
+ <button class="ctrl" id="leftBtn">⬅️</button>
+ <button class="ctrl" id="jumpBtn">⬆️</button>
+ <button class="ctrl" id="rightBtn">➡️</button>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.min.js"></script>
 
 <script>
 
-/* =================================================
-   3D CARTOON GAME
-================================================= */
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
 
-const scene = new THREE.Scene();
+let W=innerWidth;
+let H=innerHeight;
 
-scene.background = new THREE.Color(0x65c9ff);
-
-scene.fog = new THREE.Fog(
-  0x65c9ff,
-  35,
-  170
-);
-
-
-/* CAMERA */
-
-const camera =
-new THREE.PerspectiveCamera(
-  60,
-  innerWidth / innerHeight,
-  0.1,
-  300
-);
-
-camera.position.set(0,6,12);
-
-
-/* RENDERER */
-
-const renderer =
-new THREE.WebGLRenderer({
-  antialias:true
-});
-
-renderer.setPixelRatio(
-  Math.min(devicePixelRatio,2)
-);
-
-renderer.setSize(
-  innerWidth,
-  innerHeight
-);
-
-renderer.shadowMap.enabled=true;
-
-document
-.getElementById("game")
-.appendChild(renderer.domElement);
-
-
-/* LIGHT */
-
-const skyLight =
-new THREE.HemisphereLight(
-  0xffffff,
-  0x548044,
-  2.5
-);
-
-scene.add(skyLight);
-
-
-const sun =
-new THREE.DirectionalLight(
-  0xffffff,
-  2.2
-);
-
-sun.position.set(
-  -20,30,20
-);
-
-sun.castShadow=true;
-
-scene.add(sun);
-
-
-/* =================================================
-   ROAD
-================================================= */
-
-const road =
-new THREE.Mesh(
-  new THREE.BoxGeometry(
-    18,
-    0.25,
-    240
-  ),
-  new THREE.MeshStandardMaterial({
-    color:0x303030,
-    roughness:1
-  })
-);
-
-road.position.set(
-  0,
-  -0.15,
-  -75
-);
-
-road.receiveShadow=true;
-
-scene.add(road);
-
-
-/* GRASS */
-
-const grass =
-new THREE.Mesh(
-  new THREE.PlaneGeometry(
-    250,
-    300
-  ),
-  new THREE.MeshStandardMaterial({
-    color:0x4e9b42
-  })
-);
-
-grass.rotation.x=
--Math.PI/2;
-
-grass.position.set(
-  0,
-  -0.3,
-  -75
-);
-
-scene.add(grass);
-
-
-/* LANE LINES */
-
-for(const x of [-3,3]){
-
-  const line =
-  new THREE.Mesh(
-    new THREE.BoxGeometry(
-      0.12,
-      0.04,
-      240
-    ),
-    new THREE.MeshStandardMaterial({
-      color:0xffffff
-    })
-  );
-
-  line.position.set(
-    x,
-    0.02,
-    -75
-  );
-
-  scene.add(line);
+function resize(){
+ W=innerWidth;
+ H=innerHeight;
+ canvas.width=W;
+ canvas.height=H;
 }
 
-
-/* ROAD EDGES */
-
-for(const x of [-9,9]){
-
-  const edge =
-  new THREE.Mesh(
-    new THREE.BoxGeometry(
-      0.3,
-      0.08,
-      240
-    ),
-    new THREE.MeshStandardMaterial({
-      color:0xffffff
-    })
-  );
-
-  edge.position.set(
-    x,
-    0.03,
-    -75
-  );
-
-  scene.add(edge);
-}
+resize();
+addEventListener("resize",resize);
 
 
-/* =================================================
-   CARTOON TREES
-================================================= */
+/* IMAGES */
 
-const trees=[];
+const playerImg=new Image();
+playerImg.src="character.jpg";
 
-function makeTree(x,z){
-
-  const tree =
-  new THREE.Group();
+const policeImg=new Image();
+policeImg.src="police.png";
 
 
-  /* trunk */
-
-  const trunk =
-  new THREE.Mesh(
-    new THREE.CylinderGeometry(
-      .35,
-      .5,
-      3,
-      8
-    ),
-    new THREE.MeshStandardMaterial({
-      color:0x70452d
-    })
-  );
-
-  trunk.position.y=1.5;
-
-  tree.add(trunk);
-
-
-  /* cartoon leaves */
-
-  for(let i=0;i<4;i++){
-
-    const leaf =
-    new THREE.Mesh(
-      new THREE.SphereGeometry(
-        1.25,
-        12,
-        10
-      ),
-      new THREE.MeshStandardMaterial({
-        color:
-          i%2
-          ? 0x159447
-          : 0x27ad4b
-      })
-    );
-
-    leaf.position.set(
-      (i%2)*1-0.5,
-      3+i*.35,
-      (i%2)*.5
-    );
-
-    tree.add(leaf);
-
-  }
-
-
-  tree.position.set(
-    x,
-    0,
-    z
-  );
-
-  scene.add(tree);
-
-  trees.push(tree);
-}
-
-
-/* दोनों तरफ बहुत सारे पेड़ */
-
-for(
-  let z=-10;
-  z>-210;
-  z-=12
-){
-
-  makeTree(
-    -13-Math.random()*4,
-    z
-  );
-
-  makeTree(
-    13+Math.random()*4,
-    z-5
-  );
-}
-
-
-/* =================================================
-   CHARACTER
-================================================= */
-
-const loader =
-new THREE.TextureLoader();
-
-const playerTexture =
-loader.load(
-  "character.jpg"
-);
-
-const policeTexture =
-loader.load(
-  "police.png"
-);
-
-
-const playerMaterial =
-new THREE.SpriteMaterial({
-  map:playerTexture,
-  transparent:true
-});
-
-const policeMaterial =
-new THREE.SpriteMaterial({
-  map:policeTexture,
-  transparent:true
-});
-
-
-const player =
-new THREE.Sprite(
-  playerMaterial
-);
-
-player.scale.set(
-  4,
-  6,
-  1
-);
-
-player.position.set(
-  0,
-  3,
-  5
-);
-
-scene.add(player);
-
-
-const police =
-new THREE.Sprite(
-  policeMaterial
-);
-
-police.scale.set(
-  3.3,
-  5,
-  1
-);
-
-police.position.set(
-  0,
-  2.5,
-  -5
-);
-
-scene.add(police);
-
-
-/* =================================================
-   LANES
-================================================= */
-
-const lanes=[
-  -6,
-  0,
-  6
-];
-
-let currentLane=1;
-let targetLane=1;
-
-
-/* =================================================
-   JUMP
-================================================= */
-
-let jumpY=0;
-let jumpVelocity=0;
-
-
-/* =================================================
-   GAME VARIABLES
-================================================= */
+/* GAME */
 
 let playing=false;
-
 let score=0;
 let coins=0;
 
-let speed=.55;
+let lane=1;
+let targetLane=1;
 
-let policeDistance=0;
+let jump=0;
+let jumpSpeed=0;
+
+let speed=6;
 
 let trains=[];
-let coinObjects=[];
+let coinList=[];
+let treeList=[];
+
+let spawnTimer=0;
+let coinTimer=0;
 
 
-/* =================================================
-   TRAIN
-================================================= */
-
-function createTrain(){
-
-  const lane=
-  Math.floor(
-    Math.random()*3
-  );
-
-  const train =
-  new THREE.Group();
-
-
-  /* body */
-
-  const body =
-  new THREE.Mesh(
-    new THREE.BoxGeometry(
-      4,
-      3.2,
-      7
-    ),
-    new THREE.MeshStandardMaterial({
-      color:0xe02d2d
-    })
-  );
-
-  body.position.y=1.6;
-
-  train.add(body);
-
-
-  /* roof */
-
-  const roof =
-  new THREE.Mesh(
-    new THREE.BoxGeometry(
-      4.3,
-      .35,
-      7.3
-    ),
-    new THREE.MeshStandardMaterial({
-      color:0x222222
-    })
-  );
-
-  roof.position.y=3.35;
-
-  train.add(roof);
-
-
-  /* windows */
-
-  for(
-    const z of [-2.2,0,2.2]
-  ){
-
-    const windowMesh =
-    new THREE.Mesh(
-      new THREE.BoxGeometry(
-        3,
-        1,
-        .12
-      ),
-      new THREE.MeshStandardMaterial({
-        color:0x91e8ff
-      })
-    );
-
-    windowMesh.position.set(
-      0,
-      2.1,
-      z
-    );
-
-    train.add(windowMesh);
-
-  }
-
-
-  /* front light */
-
-  const light =
-  new THREE.Mesh(
-    new THREE.SphereGeometry(
-      .3,
-      12,
-      12
-    ),
-    new THREE.MeshStandardMaterial({
-      color:0xffe600
-    })
-  );
-
-  light.position.set(
-    0,
-    1,
-    3.55
-  );
-
-  train.add(light);
-
-
-  train.position.set(
-    lanes[lane],
-    0,
-    -100
-  );
-
-  scene.add(train);
-
-  trains.push({
-    object:train,
-    lane:lane
-  });
-}
-
-
-/* =================================================
-   COIN
-================================================= */
-
-function createCoin(){
-
-  const lane=
-  Math.floor(
-    Math.random()*3
-  );
-
-  const coin =
-  new THREE.Mesh(
-    new THREE.CylinderGeometry(
-      .7,
-      .7,
-      .2,
-      24
-    ),
-    new THREE.MeshStandardMaterial({
-      color:0xffd21c,
-      metalness:.5
-    })
-  );
-
-  coin.rotation.x=
-  Math.PI/2;
-
-  coin.position.set(
-    lanes[lane],
-    1.6,
-    -80
-  );
-
-  scene.add(coin);
-
-  coinObjects.push({
-    object:coin,
-    lane:lane
-  });
-}
-
-
-/* =================================================
-   GAME START
-================================================= */
+/* START */
 
 function startGame(){
 
-  playing=true;
+ playing=true;
 
-  score=0;
-  coins=0;
+ score=0;
+ coins=0;
 
-  speed=.55;
+ lane=1;
+ targetLane=1;
 
-  currentLane=1;
-  targetLane=1;
+ jump=0;
+ jumpSpeed=0;
 
-  jumpY=0;
-  jumpVelocity=0;
+ speed=6;
 
-  policeDistance=0;
+ trains=[];
+ coinList=[];
 
+ document.getElementById("menu").style.display="none";
+ document.getElementById("over").style.display="none";
 
-  /* पुराने objects हटाएँ */
-
-  trains.forEach(
-    t=>scene.remove(t.object)
-  );
-
-  coinObjects.forEach(
-    c=>scene.remove(c.object)
-  );
-
-  trains=[];
-  coinObjects=[];
-
-
-  document
-  .getElementById("startScreen")
-  .style.display="none";
-
-  document
-  .getElementById("gameOver")
-  .style.display="none";
+ requestAnimationFrame(loop);
 }
 
 
-/* =================================================
-   CONTROLS
-================================================= */
+/* GAME OVER */
 
-function left(){
+function gameOver(){
 
-  if(!playing)return;
+ playing=false;
 
-  targetLane--;
+ document.getElementById("finalScore").textContent=
+ Math.floor(score);
 
-  if(targetLane<0)
-    targetLane=0;
+ document.getElementById("finalCoins").textContent=
+ coins;
+
+ document.getElementById("over").style.display="flex";
 }
 
 
-function right(){
+/* LANES */
 
-  if(!playing)return;
-
-  targetLane++;
-
-  if(targetLane>2)
-    targetLane=2;
+function laneX(n){
+ return W/2+(n-1)*W*.22;
 }
 
 
-function jump(){
+/* LEFT */
 
-  if(
-    !playing ||
-    jumpY>0
-  ) return;
+function moveLeft(){
 
-  jumpY=.1;
+ if(!playing)return;
 
-  jumpVelocity=.43;
+ targetLane--;
+
+ if(targetLane<0)
+ targetLane=0;
+}
+
+
+/* RIGHT */
+
+function moveRight(){
+
+ if(!playing)return;
+
+ targetLane++;
+
+ if(targetLane>2)
+ targetLane=2;
+}
+
+
+/* JUMP */
+
+function doJump(){
+
+ if(!playing)return;
+
+ if(jump===0){
+  jump=1;
+  jumpSpeed=15;
+ }
 }
 
 
 /* BUTTONS */
 
-document
-.getElementById("left")
-.onclick=left;
+document.getElementById("leftBtn")
+.addEventListener("click",moveLeft);
 
-document
-.getElementById("right")
-.onclick=right;
+document.getElementById("rightBtn")
+.addEventListener("click",moveRight);
 
-document
-.getElementById("jump")
-.onclick=jump;
+document.getElementById("jumpBtn")
+.addEventListener("click",doJump);
 
-document
-.getElementById("start")
-.onclick=startGame;
+document.getElementById("startBtn")
+.addEventListener("click",startGame);
 
-document
-.getElementById("restart")
-.onclick=startGame;
+document.getElementById("restartBtn")
+.addEventListener("click",startGame);
 
 
 /* KEYBOARD */
 
-document.addEventListener(
-"keydown",
-function(e){
+document.addEventListener("keydown",e=>{
 
-  if(e.key==="ArrowLeft")
-    left();
+ if(e.key==="ArrowLeft")
+ moveLeft();
 
-  if(e.key==="ArrowRight")
-    right();
+ if(e.key==="ArrowRight")
+ moveRight();
 
-  if(
-    e.key==="ArrowUp" ||
-    e.code==="Space"
-  )
-    jump();
+ if(e.key==="ArrowUp" || e.code==="Space")
+ doJump();
+
 });
 
 
-/* =================================================
-   TOUCH SWIPE
-================================================= */
+/* TRAIN */
 
-let touchX=0;
-let touchY=0;
+function addTrain(){
 
-renderer.domElement.addEventListener(
-"touchstart",
-function(e){
+ let n=Math.floor(Math.random()*3);
 
-  touchX=
-  e.touches[0].clientX;
+ trains.push({
+  lane:n,
+  y:-180
+ });
 
-  touchY=
-  e.touches[0].clientY;
-
-},
-{passive:true}
-);
+}
 
 
-renderer.domElement.addEventListener(
-"touchend",
-function(e){
+/* COIN */
 
-  if(!playing)return;
+function addCoin(){
 
-  const x=
-  e.changedTouches[0].clientX;
+ let n=Math.floor(Math.random()*3);
 
-  const y=
-  e.changedTouches[0].clientY;
+ coinList.push({
+  lane:n,
+  y:-40,
+  spin:0
+ });
 
-  const dx=x-touchX;
-  const dy=y-touchY;
+}
 
+
+/* TREES */
+
+function drawTree(x,y,size){
+
+ ctx.fillStyle="#75462b";
+
+ ctx.fillRect(
+  x-size*.12,
+  y,
+  size*.24,
+  size*.9
+ );
+
+ ctx.fillStyle="#159447";
+
+ ctx.beginPath();
+ ctx.arc(
+  x,
+  y-size*.15,
+  size*.5,
+  0,
+  Math.PI*2
+ );
+ ctx.fill();
+
+ ctx.fillStyle="#24ad4d";
+
+ ctx.beginPath();
+ ctx.arc(
+  x-size*.3,
+  y-size*.05,
+  size*.35,
+  0,
+  Math.PI*2
+ );
+ ctx.fill();
+
+ ctx.beginPath();
+ ctx.arc(
+  x+size*.3,
+  y-size*.05,
+  size*.35,
+  0,
+  Math.PI*2
+ );
+ ctx.fill();
+}
+
+
+/* ROAD */
+
+function drawRoad(){
+
+ /* sky */
+
+ ctx.fillStyle="#55c9ff";
+ ctx.fillRect(0,0,W,H);
+
+
+ /* grass */
+
+ ctx.fillStyle="#4c9943";
+ ctx.fillRect(0,0,W,H);
+
+
+ /* road perspective */
+
+ ctx.fillStyle="#303030";
+
+ ctx.beginPath();
+
+ ctx.moveTo(W*.18,0);
+ ctx.lineTo(W*.82,0);
+ ctx.lineTo(W, H);
+ ctx.lineTo(0,H);
+ ctx.closePath();
+
+ ctx.fill();
+
+
+ /* road edges */
+
+ ctx.strokeStyle="#fff";
+ ctx.lineWidth=7;
+
+ ctx.beginPath();
+ ctx.moveTo(W*.18,0);
+ ctx.lineTo(0,H);
+ ctx.stroke();
+
+ ctx.beginPath();
+ ctx.moveTo(W*.82,0);
+ ctx.lineTo(W,H);
+ ctx.stroke();
+
+
+ /* lane lines */
+
+ ctx.strokeStyle="#ddd";
+ ctx.lineWidth=4;
+
+ ctx.setLineDash([35,35]);
+
+ ctx.beginPath();
+ ctx.moveTo(W*.39,0);
+ ctx.lineTo(W*.33,H);
+ ctx.stroke();
+
+ ctx.beginPath();
+ ctx.moveTo(W*.61,0);
+ ctx.lineTo(W*.67,H);
+ ctx.stroke();
+
+ ctx.setLineDash([]);
+
+
+ /* trees */
+
+ for(let i=0;i<7;i++){
+
+  let y=(i*170+(score*3))%H;
+
+  drawTree(
+   W*.08,
+   y,
+   55
+  );
+
+  drawTree(
+   W*.92,
+   y+80,
+   55
+  );
+ }
+}
+
+
+/* PLAYER */
+
+function drawPlayer(){
+
+ let x=laneX(targetLane);
+
+ lane+=
+ (targetLane-lane)*.12;
+
+ x=laneX(
+  Math.round(lane)
+ );
+
+
+ let y=
+ H-190-jump;
+
+
+ if(playerImg.complete){
+
+  ctx.drawImage(
+   playerImg,
+   x-65,
+   y,
+   130,
+   170
+  );
+
+ }else{
+
+  ctx.fillStyle="#111";
+
+  ctx.fillRect(
+   x-35,
+   y,
+   70,
+   120
+  );
+ }
+}
+
+
+/* POLICE */
+
+function drawPolice(){
+
+ let x=laneX(targetLane);
+
+ let y=H-45;
+
+ if(policeImg.complete){
+
+  ctx.drawImage(
+   policeImg,
+   x-55,
+   y,
+   110,
+   165
+  );
+ }
+}
+
+
+/* TRAIN */
+
+function drawTrains(){
+
+ for(let t of trains){
+
+  let x=laneX(t.lane);
+
+  let scale=
+   0.45+
+   Math.min(t.y/H,1)*.8;
+
+  let w=110*scale;
+  let h=150*scale;
+
+  ctx.fillStyle="#df2929";
+
+  ctx.fillRect(
+   x-w/2,
+   t.y,
+   w,
+   h
+  );
+
+  ctx.fillStyle="#8de4ff";
+
+  ctx.fillRect(
+   x-w*.3,
+   t.y+h*.2,
+   w*.6,
+   h*.25
+  );
+
+  ctx.fillStyle="#ffd21c";
+
+  ctx.beginPath();
+
+  ctx.arc(
+   x,
+   t.y+h*.8,
+   10*scale,
+   0,
+   Math.PI*2
+  );
+
+  ctx.fill();
+ }
+}
+
+
+/* COINS */
+
+function drawCoins(){
+
+ for(let c of coinList){
+
+  let x=laneX(c.lane);
+
+  c.spin+=.15;
+
+  let size=
+   18+
+   Math.sin(c.spin)*4;
+
+  ctx.fillStyle="#ffd21c";
+
+  ctx.beginPath();
+
+  ctx.arc(
+   x,
+   c.y,
+   size,
+   0,
+   Math.PI*2
+  );
+
+  ctx.fill();
+
+  ctx.fillStyle="#fff";
+
+  ctx.font="bold 18px Arial";
+
+  ctx.textAlign="center";
+
+  ctx.fillText(
+   "₹",
+   x,
+   c.y+6
+  );
+ }
+}
+
+
+/* UPDATE */
+
+function update(){
+
+ /* lane */
+
+ if(
+  Math.abs(targetLane-lane)<.01
+ ){
+  lane=targetLane;
+ }
+
+
+ /* jump */
+
+ if(jump>0){
+
+  jump+=jumpSpeed;
+
+  jumpSpeed-=1;
+
+  if(jump<=0){
+   jump=0;
+   jumpSpeed=0;
+  }
+ }
+
+
+ /* trains */
+
+ for(let t of trains){
+
+  t.y+=speed;
+
+  let px=laneX(targetLane);
+
+  let tx=laneX(t.lane);
 
   if(
-    Math.abs(dx)>
-    Math.abs(dy)
+   Math.abs(px-tx)<65 &&
+   t.y>H-260 &&
+   t.y<H-80 &&
+   jump<100
   ){
-
-    if(dx>40)
-      right();
-
-    if(dx<-40)
-      left();
-
-  }else{
-
-    if(dy<-40)
-      jump();
-
+   gameOver();
   }
-
-},
-{passive:true}
-);
+ }
 
 
-/* =================================================
-   UPDATE PLAYER
-================================================= */
-
-function updatePlayer(){
-
-  const wanted=
-  lanes[targetLane];
-
-  player.position.x +=
-  (
-    wanted-
-    player.position.x
-  )*.15;
+ trains=
+ trains.filter(t=>t.y<H+200);
 
 
-  /* jump */
+ /* coins */
 
-  if(jumpY>0){
+ for(let c of coinList){
 
-    jumpY+=jumpVelocity;
+  c.y+=speed;
 
-    jumpVelocity-=.025;
+  let px=laneX(targetLane);
 
-    if(jumpY<=0){
-
-      jumpY=0;
-      jumpVelocity=0;
-    }
-  }
-
-
-  player.position.y=
-  3+jumpY;
-
-
-  /* cartoon running bounce */
-
-  if(playing){
-
-    player.position.y +=
-    Math.sin(
-      Date.now()*.018
-    )*.08;
-
-  }
-}
-
-
-/* =================================================
-   POLICE CHASE
-================================================= */
-
-function updatePolice(){
-
-  police.position.x +=
-  (
-    player.position.x-
-    police.position.x
-  )*.08;
-
-
-  policeDistance+=.004;
-
-
-  police.position.z=
-  -5+
-  policeDistance;
-
-
-  /* police थोड़ा animation */
-
-  police.position.y=
-  2.5+
-  Math.sin(
-    Date.now()*.018
-  )*.05;
-
+  let cx=laneX(c.lane);
 
   if(
-    policeDistance>9
+   Math.abs(px-cx)<60 &&
+   c.y>H-250 &&
+   c.y<H-80
   ){
 
-    gameOver();
+   coins++;
+   score+=25;
+
+   c.y=H+500;
   }
+ }
+
+ coinList=
+ coinList.filter(c=>c.y<H+100);
+
+
+ /* spawning */
+
+ spawnTimer--;
+
+ coinTimer--;
+
+ if(spawnTimer<=0){
+
+  addTrain();
+
+  spawnTimer=
+   45+
+   Math.random()*45;
+ }
+
+ if(coinTimer<=0){
+
+  addCoin();
+
+  coinTimer=
+   30+
+   Math.random()*30;
+ }
+
+
+ score+=.1;
+
+ speed+=.001;
+
+
+ document.getElementById("score")
+ .textContent=Math.floor(score);
+
+ document.getElementById("coins")
+ .textContent=coins;
+
+
+ document.getElementById("mission")
+ .textContent=
+ "🎯 Mission: 20 Coins ("+
+ coins+
+ "/20)";
 }
 
 
-/* =================================================
-   UPDATE TRAIN
-================================================= */
+/* LOOP */
 
-function updateTrains(){
+function loop(){
 
-  for(
-    let i=trains.length-1;
-    i>=0;
-    i--
-  ){
+ if(!playing)return;
 
-    const t=
-    trains[i];
+ update();
 
-    t.object.position.z+=
-    speed;
+ drawRoad();
 
+ drawTrains();
 
-    const dx=
-    Math.abs(
-      t.object.position.x-
-      player.position.x
-    );
+ drawCoins();
 
-    const dz=
-    Math.abs(
-      t.object.position.z-
-      player.position.z
-    );
+ drawPolice();
 
+ drawPlayer();
 
-    /* collision */
-
-    if(
-      dx<2.8 &&
-      dz<4 &&
-      jumpY<2.3
-    ){
-
-      gameOver();
-
-      return;
-    }
-
-
-    if(
-      t.object.position.z>20
-    ){
-
-      scene.remove(
-        t.object
-      );
-
-      trains.splice(
-        i,
-        1
-      );
-    }
-  }
+ requestAnimationFrame(loop);
 }
 
 
-/* =================================================
-   UPDATE COINS
-================================================= */
+/* INITIAL SCREEN */
 
-function updateCoins(){
-
-  for(
-    let i=coinObjects.length-1;
-    i>=0;
-    i--
-  ){
-
-    const c=
-    coinObjects[i];
-
-    c.object.position.z+=
-    speed;
-
-    c.object.rotation.z+=.08;
-
-
-    const dx=
-    Math.abs(
-      c.object.position.x-
-      player.position.x
-    );
-
-    const dz=
-    Math.abs(
-      c.object.position.z-
-      player.position.z
-    );
-
-
-    if(
-      dx<2.3 &&
-      dz<2.5
-    ){
-
-      coins++;
-      score+=25;
-
-      scene.remove(
-        c.object
-      );
-
-      coinObjects.splice(
-        i,
-        1
-      );
-
-      continue;
-    }
-
-
-    if(
-      c.object.position.z>20
-    ){
-
-      scene.remove(
-        c.object
-      );
-
-      coinObjects.splice(
-        i,
-        1
-      );
-    }
-  }
-}
-
-
-/* =================================================
-   MISSION
-================================================= */
-
-function updateMission(){
-
-  const m=
-  document.getElementById(
-    "mission"
-  );
-
-
-  if(coins<20){
-
-    m.textContent=
-    "🎯 Mission: 20 Coins ("+
-    coins+
-    "/20)";
-
-  }else if(score<1000){
-
-    m.textContent=
-    "🎯 Mission: 1000 Score";
-
-  }else{
-
-    m.textContent=
-    "🏆 Mission Complete!";
-  }
-}
-
-
-/* =================================================
-   GAME OVER
-================================================= */
-
-function gameOver(){
-
-  if(!playing)return;
-
-  playing=false;
-
-
-  document
-  .getElementById(
-    "finalScore"
-  )
-  .textContent=
-  Math.floor(score);
-
-
-  document
-  .getElementById(
-    "finalCoins"
-  )
-  .textContent=
-  coins;
-
-
-  document
-  .getElementById(
-    "gameOver"
-  )
-  .style.display="flex";
-}
-
-
-/* =================================================
-   SPAWN
-================================================= */
-
-let trainTimer=20;
-let coinTimer=10;
-
-function spawnObjects(){
-
-  trainTimer-=speed;
-
-  coinTimer-=speed;
-
-
-  if(trainTimer<=0){
-
-    createTrain();
-
-    trainTimer=
-    45+
-    Math.random()*30;
-  }
-
-
-  if(coinTimer<=0){
-
-    createCoin();
-
-    coinTimer=
-    18+
-    Math.random()*18;
-  }
-}
-
-
-/* =================================================
-   ANIMATION
-================================================= */
-
-function animate(){
-
-  requestAnimationFrame(
-    animate
-  );
-
-
-  if(playing){
-
-    spawnObjects();
-
-    updatePlayer();
-
-    updatePolice();
-
-    updateTrains();
-
-    updateCoins();
-
-    score+=.08;
-
-    speed+=.0002;
-
-    document
-    .getElementById("score")
-    .textContent=
-    Math.floor(score);
-
-    document
-    .getElementById("coins")
-    .textContent=
-    coins;
-
-    updateMission();
-  }
-
-
-  /* CAMERA */
-
-  camera.position.x +=
-  (
-    player.position.x*.15-
-    camera.position.x
-  )*.04;
-
-
-  camera.position.y=6;
-
-  camera.lookAt(
-    player.position.x,
-    2,
-    -18
-  );
-
-
-  renderer.render(
-    scene,
-    camera
-  );
-}
-
-animate();
-
-
-/* =================================================
-   RESIZE
-================================================= */
-
-window.addEventListener(
-"resize",
-function(){
-
-  camera.aspect=
-  innerWidth/innerHeight;
-
-  camera.updateProjectionMatrix();
-
-  renderer.setSize(
-    innerWidth,
-    innerHeight
-  );
-});
+drawRoad();
 
 </script>
 
 </body>
-  </html>
+</html>
