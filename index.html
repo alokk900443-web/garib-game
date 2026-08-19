@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="hi">
-<!DOCTYPE html>
-<html lang="hi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"
-      content="width=device-width,initial-scale=1.0,user-scalable=no">
+content="width=device-width,initial-scale=1.0,user-scalable=no">
 
 <title>Police Chase Runner</title>
 
@@ -18,12 +16,11 @@
 
 html,body{
   margin:0;
-  padding:0;
   width:100%;
   height:100%;
   overflow:hidden;
-  background:#74c9ff;
   font-family:Arial,sans-serif;
+  background:#55bdf5;
 }
 
 canvas{
@@ -38,87 +35,110 @@ canvas{
   top:10px;
   left:10px;
   right:10px;
-  z-index:5;
+  z-index:10;
   display:flex;
   justify-content:space-between;
   color:white;
-  font-size:17px;
+  font-size:18px;
   font-weight:bold;
-  text-shadow:2px 2px 5px black;
+  text-shadow:2px 2px 5px #000;
 }
 
 #mission{
   position:fixed;
-  top:48px;
+  top:55px;
   left:50%;
   transform:translateX(-50%);
-  z-index:5;
-  color:#fff;
-  background:#0009;
-  padding:7px 12px;
-  border-radius:12px;
+  z-index:10;
+  background:#111d;
+  color:white;
+  padding:9px 15px;
+  border-radius:15px;
   font-weight:bold;
-  font-size:14px;
+  text-align:center;
 }
 
-#buttons{
+#controls{
   position:fixed;
   bottom:18px;
   left:0;
   right:0;
-  z-index:10;
+  z-index:20;
   display:flex;
   justify-content:space-between;
-  padding:0 20px;
+  align-items:center;
+  padding:0 25px;
 }
 
-button{
+.control{
+  width:72px;
+  height:60px;
   border:0;
-  width:70px;
-  height:58px;
   border-radius:18px;
   background:#ffffffdd;
-  font-size:28px;
-  font-weight:bold;
-  box-shadow:0 4px 10px #0006;
+  font-size:30px;
+  box-shadow:0 4px 12px #0006;
 }
 
 #jump{
   position:fixed;
-  bottom:18px;
   left:50%;
   transform:translateX(-50%);
-  z-index:11;
+  bottom:18px;
+  z-index:21;
 }
 
-#startScreen,
-#gameOver{
+.screen{
   position:fixed;
   inset:0;
-  z-index:20;
+  z-index:50;
   display:flex;
-  align-items:center;
   justify-content:center;
-  background:#0009;
+  align-items:center;
+  background:#000b;
   color:white;
   text-align:center;
 }
 
 .box{
-  width:88%;
-  max-width:360px;
-  padding:25px;
+  width:90%;
+  max-width:370px;
+  background:#171717;
+  padding:22px;
   border-radius:25px;
-  background:#151515f5;
   box-shadow:0 10px 40px #000;
 }
 
-.play{
-  width:auto;
-  padding:12px 30px;
+.box h1{
+  margin-top:0;
+}
+
+.mainBtn{
+  display:block;
+  width:100%;
+  margin:10px 0;
+  padding:13px;
+  border:0;
+  border-radius:15px;
+  font-size:18px;
+  font-weight:bold;
   background:#ffd21c;
   color:#111;
-  font-size:20px;
+}
+
+.fileBtn{
+  display:block;
+  width:100%;
+  margin:10px 0;
+  padding:13px;
+  border-radius:15px;
+  background:#3287ff;
+  color:white;
+  font-weight:bold;
+}
+
+input[type=file]{
+  display:none;
 }
 
 #gameOver{
@@ -137,74 +157,118 @@ button{
 </div>
 
 <div id="mission">
-  🎯 Mission: 20 Coins जमा करो
+🎯 Mission: 20 Coins जमा करो
 </div>
 
-<div id="buttons">
-  <button id="left">⬅️</button>
-  <button id="right">➡️</button>
+
+<!-- मोबाइल CONTROLS -->
+
+<div id="controls">
+
+  <button class="control" id="left">
+    ⬅️
+  </button>
+
+  <button class="control" id="jump">
+    ⬆️
+  </button>
+
+  <button class="control" id="right">
+    ➡️
+  </button>
+
 </div>
 
-<button id="jump">⬆️</button>
+
+<!-- START SCREEN -->
+
+<div class="screen" id="startScreen">
+
+<div class="box">
+
+<h1>🏃 POLICE CHASE</h1>
+
+<p>
+ट्रेन से बचो और पुलिस से भागो!
+</p>
+
+<label class="fileBtn">
+🏃 अपना Character चुनें
+<input
+type="file"
+id="characterFile"
+accept="image/*">
+</label>
+
+<p id="characterName">
+❌ Character नहीं चुना
+</p>
 
 
-<!-- START -->
+<label class="fileBtn">
+👮 Police Character चुनें
+<input
+type="file"
+id="policeFile"
+accept="image/*">
+</label>
 
-<div id="startScreen">
-  <div class="box">
-    <h1>🏃 POLICE CHASE</h1>
+<p id="policeName">
+❌ Police नहीं चुना
+</p>
 
-    <p>
-      पुलिस से बचकर दौड़ो!<br>
-      ट्रेन और बाधाओं से बचो।
-    </p>
 
-    <p>
-      ⬅️ ➡️ लेन बदलें<br>
-      ⬆️ Jump करें
-    </p>
+<button
+class="mainBtn"
+id="startButton">
+▶️ START GAME
+</button>
 
-    <button class="play" id="startButton">
-      ▶️ START GAME
-    </button>
-  </div>
+<p style="font-size:13px;opacity:.7">
+पहले दोनों फोटो चुनें, फिर START दबाएँ।
+</p>
+
+</div>
+
 </div>
 
 
 <!-- GAME OVER -->
 
-<div id="gameOver">
-  <div class="box">
+<div class="screen" id="gameOver">
 
-    <h1>🚨 पकड़े गए!</h1>
+<div class="box">
 
-    <p>
-      👮 पुलिस ने आपको पकड़ लिया!
-    </p>
+<h1>🚨 GAME OVER</h1>
 
-    <p>
-      🏆 Score:
-      <b id="finalScore">0</b>
-    </p>
+<p>👮 पुलिस ने पकड़ लिया!</p>
 
-    <p>
-      🪙 Coins:
-      <b id="finalCoins">0</b>
-    </p>
+<p>
+🏆 Score:
+<b id="finalScore">0</b>
+</p>
 
-    <button class="play" id="restart">
-      🔄 फिर खेलें
-    </button>
+<p>
+🪙 Coins:
+<b id="finalCoins">0</b>
+</p>
 
-  </div>
+<button
+class="mainBtn"
+id="restart">
+🔄 फिर से खेलें
+</button>
+
+</div>
+
 </div>
 
 
 <script>
 
-/* =========================================
-   CANVAS
-========================================= */
+/* =========================
+CANVAS
+========================= */
 
 const canvas =
 document.getElementById("game");
@@ -212,7 +276,8 @@ document.getElementById("game");
 const ctx =
 canvas.getContext("2d");
 
-let W,H;
+let W=innerWidth;
+let H=innerHeight;
 
 function resize(){
 
@@ -227,34 +292,75 @@ function resize(){
 resize();
 
 window.addEventListener(
-  "resize",
-  resize
+"resize",
+resize
 );
 
 
-/* =========================================
-   आपकी दोनों PHOTOS
-========================================= */
+/* =========================
+IMAGES
+========================= */
 
-const playerImage=new Image();
+let playerImage=new Image();
+let policeImage=new Image();
 
-/* पहली भेजी हुई फोटो */
-playerImage.src="character.jpg";
-
-
-const policeImage=new Image();
-
-/* दूसरी पुलिस वाली फोटो */
-policeImage.src="police.png";
+let playerReady=false;
+let policeReady=false;
 
 
-/* =========================================
-   GAME VARIABLES
-========================================= */
+/* =========================
+PHOTO SELECT
+========================= */
 
-let gameRunning=false;
+document
+.getElementById("characterFile")
+.addEventListener("change",function(){
 
-let playerLane=1;
+  const file=this.files[0];
+
+  if(!file)return;
+
+  playerImage.src=
+  URL.createObjectURL(file);
+
+  playerReady=true;
+
+  document.getElementById(
+    "characterName"
+  ).textContent=
+  "✅ Character तैयार है";
+
+});
+
+
+document
+.getElementById("policeFile")
+.addEventListener("change",function(){
+
+  const file=this.files[0];
+
+  if(!file)return;
+
+  policeImage.src=
+  URL.createObjectURL(file);
+
+  policeReady=true;
+
+  document.getElementById(
+    "policeName"
+  ).textContent=
+  "✅ Police तैयार है";
+
+});
+
+
+/* =========================
+GAME VARIABLES
+========================= */
+
+let running=false;
+
+let lane=1;
 let targetLane=1;
 
 let jump=0;
@@ -265,10 +371,10 @@ let coins=0;
 
 let speed=6;
 
-let policeDistance=170;
+let policeDistance=145;
 
 let obstacles=[];
-let coinObjects=[];
+let coinList=[];
 let trees=[];
 
 let obstacleTimer=0;
@@ -276,47 +382,47 @@ let coinTimer=0;
 let treeTimer=0;
 
 
-/* =========================================
-   LANE POSITION
-========================================= */
+/* =========================
+LANE
+========================= */
 
-function laneX(lane){
+function laneX(n){
 
-  const left=W*0.15;
-  const width=W*0.70;
+  const left=W*.15;
+  const width=W*.70;
 
   return left+
-         width*(lane+0.5)/3;
+  width*(n+.5)/3;
 
 }
 
 
-/* =========================================
-   ROAD
-========================================= */
+/* =========================
+WORLD
+========================= */
 
-function drawRoad(){
+function drawWorld(){
 
-  /* आसमान */
+  /* SKY */
 
-  const sky=
+  let sky=
   ctx.createLinearGradient(
     0,0,0,H
   );
 
   sky.addColorStop(
     0,
-    "#55bdf5"
+    "#46b9f5"
   );
 
   sky.addColorStop(
-    0.55,
-    "#c7efff"
+    .55,
+    "#c8f0ff"
   );
 
   sky.addColorStop(
     1,
-    "#6dbd4e"
+    "#62ad45"
   );
 
   ctx.fillStyle=sky;
@@ -326,20 +432,25 @@ function drawRoad(){
   );
 
 
-  /* पहाड़ */
+  /* HILLS */
 
-  ctx.fillStyle="#55904a";
+  ctx.fillStyle="#579b48";
 
   ctx.beginPath();
 
-  ctx.moveTo(0,H*.38);
+  ctx.moveTo(0,H*.42);
 
-  ctx.lineTo(W*.15,H*.22);
-  ctx.lineTo(W*.28,H*.37);
-  ctx.lineTo(W*.45,H*.20);
-  ctx.lineTo(W*.62,H*.36);
-  ctx.lineTo(W*.78,H*.23);
-  ctx.lineTo(W,H*.37);
+  ctx.lineTo(W*.18,H*.20);
+
+  ctx.lineTo(W*.35,H*.40);
+
+  ctx.lineTo(W*.52,H*.18);
+
+  ctx.lineTo(W*.72,H*.40);
+
+  ctx.lineTo(W*.86,H*.22);
+
+  ctx.lineTo(W,H*.40);
 
   ctx.lineTo(W,H);
 
@@ -350,15 +461,14 @@ function drawRoad(){
   ctx.fill();
 
 
-  /* सड़क */
+  /* ROAD */
 
-  ctx.fillStyle="#343434";
+  ctx.fillStyle="#303030";
 
   ctx.beginPath();
 
   ctx.moveTo(W*.35,0);
   ctx.lineTo(W*.65,0);
-
   ctx.lineTo(W*.95,H);
   ctx.lineTo(W*.05,H);
 
@@ -367,9 +477,9 @@ function drawRoad(){
   ctx.fill();
 
 
-  /* सड़क की किनारी */
+  /* ROAD EDGES */
 
-  ctx.strokeStyle="#fff";
+  ctx.strokeStyle="white";
   ctx.lineWidth=5;
 
   ctx.beginPath();
@@ -383,7 +493,7 @@ function drawRoad(){
   ctx.stroke();
 
 
-  /* तीन लेन */
+  /* THREE LANES */
 
   ctx.strokeStyle="#ddd";
   ctx.lineWidth=3;
@@ -409,16 +519,18 @@ function drawRoad(){
 }
 
 
-/* =========================================
-   TREES
-========================================= */
+/* =========================
+TREES
+========================= */
 
-function createTree(){
+function makeTree(){
+
+  const leftSide=
+  Math.random()<.5;
 
   trees.push({
 
-    x:
-      Math.random()<.5
+    x:leftSide
       ? Math.random()*W*.22
       : W*.78+
         Math.random()*W*.22,
@@ -436,9 +548,9 @@ function createTree(){
 
 function drawTrees(){
 
-  trees.forEach(t=>{
+  for(let t of trees){
 
-    t.y+=speed*.65;
+    t.y+=speed*.55;
 
     /* trunk */
 
@@ -452,9 +564,9 @@ function drawTrees(){
     );
 
 
-    /* पत्ते */
+    /* leaves */
 
-    ctx.fillStyle="#16813b";
+    ctx.fillStyle="#167c38";
 
     ctx.beginPath();
 
@@ -469,21 +581,21 @@ function drawTrees(){
     ctx.fill();
 
 
-    ctx.fillStyle="#239e43";
+    ctx.fillStyle="#249b43";
 
     ctx.beginPath();
 
     ctx.arc(
-      t.x-15,
+      t.x-14,
       t.y+8,
-      t.size*.35,
+      t.size*.32,
       0,
       Math.PI*2
     );
 
     ctx.fill();
 
-  });
+  }
 
 
   trees=
@@ -494,110 +606,105 @@ function drawTrees(){
 }
 
 
-/* =========================================
-   PLAYER
-========================================= */
+/* =========================
+PLAYER
+========================= */
 
 function drawPlayer(){
 
   const x=
-  laneX(playerLane);
+  laneX(lane);
 
   const y=
-  H*.79-jump;
+  H*.80-jump;
 
   const size=
-  Math.min(W*.25,155);
+  Math.min(
+    W*.30,
+    175
+  );
 
-  ctx.save();
 
-  ctx.shadowColor="#0008";
-  ctx.shadowBlur=12;
+  if(playerReady){
 
-  if(playerImage.complete){
+    ctx.save();
+
+    ctx.shadowColor="#0009";
+    ctx.shadowBlur=12;
 
     ctx.drawImage(
       playerImage,
+      x-size/2,
+      y-size*1.4,
+      size,
+      size*1.4
+    );
+
+    ctx.restore();
+
+  }
+}
+
+
+/* =========================
+POLICE
+========================= */
+
+function drawPolice(){
+
+  const x=
+  laneX(lane);
+
+  const y=
+  H*.80+
+  policeDistance;
+
+  const size=
+  Math.min(
+    W*.24,
+    145
+  );
+
+
+  if(policeReady){
+
+    ctx.save();
+
+    ctx.shadowColor="#0009";
+    ctx.shadowBlur=12;
+
+    ctx.drawImage(
+      policeImage,
       x-size/2,
       y-size*1.35,
       size,
       size*1.35
     );
 
-  }else{
-
-    ctx.fillStyle="#111";
-
-    ctx.fillRect(
-      x-30,
-      y-100,
-      60,
-      100
-    );
+    ctx.restore();
 
   }
-
-  ctx.restore();
 
 }
 
 
-/* =========================================
-   POLICE
-========================================= */
-
-function drawPolice(){
-
-  const x=
-  laneX(playerLane);
-
-  const y=
-  H*.79+policeDistance;
-
-  const size=
-  Math.min(W*.22,135);
-
-  ctx.save();
-
-  ctx.shadowColor="#0009";
-  ctx.shadowBlur=10;
-
-  if(policeImage.complete){
-
-    ctx.drawImage(
-      policeImage,
-      x-size/2,
-      y-size*1.25,
-      size,
-      size*1.25
-    );
-
-  }
-
-  ctx.restore();
-
-}
-
-
-/* =========================================
-   TRAIN
-========================================= */
+/* =========================
+TRAIN
+========================= */
 
 function createObstacle(){
 
   obstacles.push({
 
     lane:
-      Math.floor(
-        Math.random()*3
-      ),
+    Math.floor(
+      Math.random()*3
+    ),
 
-    y:-100,
+    y:-120,
 
-    type:
-      Math.random()<.7
-      ? "train"
-      : "barrier"
+    train:
+    Math.random()<.75
 
   });
 
@@ -606,7 +713,7 @@ function createObstacle(){
 
 function drawObstacles(){
 
-  obstacles.forEach(o=>{
+  for(let o of obstacles){
 
     o.y+=speed;
 
@@ -614,41 +721,37 @@ function drawObstacles(){
     laneX(o.lane);
 
 
-    if(o.type==="train"){
+    if(o.train){
 
-      /* ट्रेन */
+      /* TRAIN */
 
       ctx.fillStyle="#d92828";
 
       ctx.fillRect(
-        x-38,
+        x-40,
         o.y,
-        76,
-        105
+        80,
+        110
       );
 
 
-      /* खिड़की */
-
-      ctx.fillStyle="#a9eaff";
+      ctx.fillStyle="#9ee8ff";
 
       ctx.fillRect(
-        x-27,
+        x-28,
         o.y+18,
-        54,
-        27
+        56,
+        28
       );
 
 
-      /* लाइट */
-
-      ctx.fillStyle="#ffe500";
+      ctx.fillStyle="#ffd900";
 
       ctx.beginPath();
 
       ctx.arc(
         x,
-        o.y+83,
+        o.y+88,
         9,
         0,
         Math.PI*2
@@ -659,29 +762,20 @@ function drawObstacles(){
 
     }else{
 
-      /* बाधा */
+      /* BARRIER */
 
-      ctx.fillStyle="#f2a900";
+      ctx.fillStyle="#f0a800";
 
       ctx.fillRect(
-        x-38,
+        x-40,
         o.y,
-        76,
+        80,
         45
-      );
-
-      ctx.fillStyle="#222";
-
-      ctx.fillRect(
-        x-30,
-        o.y+10,
-        60,
-        8
       );
 
     }
 
-  });
+  }
 
 
   obstacles=
@@ -692,20 +786,20 @@ function drawObstacles(){
 }
 
 
-/* =========================================
-   COINS
-========================================= */
+/* =========================
+COINS
+========================= */
 
 function createCoin(){
 
-  coinObjects.push({
+  coinList.push({
 
     lane:
-      Math.floor(
-        Math.random()*3
-      ),
+    Math.floor(
+      Math.random()*3
+    ),
 
-    y:-30
+    y:-40
 
   });
 
@@ -714,12 +808,13 @@ function createCoin(){
 
 function drawCoins(){
 
-  coinObjects.forEach(c=>{
+  for(let c of coinList){
 
     c.y+=speed;
 
     const x=
     laneX(c.lane);
+
 
     ctx.fillStyle="#ffd21c";
 
@@ -736,9 +831,10 @@ function drawCoins(){
     ctx.fill();
 
 
-    ctx.fillStyle="#fff4a0";
+    ctx.fillStyle="#fff5a5";
 
-    ctx.font="bold 13px Arial";
+    ctx.font=
+    "bold 13px Arial";
 
     ctx.textAlign="center";
 
@@ -748,53 +844,45 @@ function drawCoins(){
       c.y+5
     );
 
-  });
+  }
 
 
-  coinObjects=
-  coinObjects.filter(
-    c=>c.y<H+50
+  coinList=
+  coinList.filter(
+    c=>c.y<H+60
   );
 
 }
 
 
-/* =========================================
-   COLLISION
-========================================= */
+/* =========================
+COLLISION
+========================= */
 
 function checkCollision(){
 
-  const playerY=
-  H*.79-jump;
+  const py=
+  H*.80-jump;
 
 
-  for(
-    let i=obstacles.length-1;
-    i>=0;
-    i--
-  ){
+  for(let i=
+      obstacles.length-1;
+      i>=0;
+      i--){
 
     const o=
     obstacles[i];
 
 
     if(
-      o.lane===Math.round(playerLane) &&
-      Math.abs(
-        o.y-playerY
-      )<75
+      o.lane===Math.round(lane)&&
+      Math.abs(o.y-py)<75&&
+      jump<50
     ){
 
-      /* Jump करके बच सकते हैं */
+      endGame();
 
-      if(jump<45){
-
-        endGame();
-
-        return;
-
-      }
+      return;
 
     }
 
@@ -803,28 +891,25 @@ function checkCollision(){
 
   /* COIN */
 
-  for(
-    let i=coinObjects.length-1;
-    i>=0;
-    i--
-  ){
+  for(let i=
+      coinList.length-1;
+      i>=0;
+      i--){
 
     const c=
-    coinObjects[i];
+    coinList[i];
 
 
     if(
-      c.lane===Math.round(playerLane) &&
-      Math.abs(
-        c.y-playerY
-      )<60
+      c.lane===Math.round(lane)&&
+      Math.abs(c.y-py)<60
     ){
 
       coins++;
 
       score+=20;
 
-      coinObjects.splice(
+      coinList.splice(
         i,
         1
       );
@@ -836,21 +921,16 @@ function checkCollision(){
 }
 
 
-/* =========================================
-   POLICE CHASE
-========================================= */
+/* =========================
+POLICE
+========================= */
 
-function updatePolice(){
+function policeChase(){
 
-  /*
-  जितना ज्यादा समय खेलेंगे,
-  पुलिस उतनी पास आएगी।
-  */
-
-  policeDistance-=0.018;
+  policeDistance-=0.012;
 
   if(
-    policeDistance<55
+    policeDistance<48
   ){
 
     endGame();
@@ -860,13 +940,13 @@ function updatePolice(){
 }
 
 
-/* =========================================
-   MISSION
-========================================= */
+/* =========================
+MISSION
+========================= */
 
-function updateMission(){
+function missionUpdate(){
 
-  const mission=
+  const m=
   document.getElementById(
     "mission"
   );
@@ -874,79 +954,35 @@ function updateMission(){
 
   if(coins<20){
 
-    mission.textContent=
+    m.textContent=
     "🎯 Mission: 20 Coins जमा करो ("+
     coins+
     "/20)";
 
+  }else if(score<1000){
+
+    m.textContent=
+    "🎯 Mission: 1000 Score पूरा करो";
+
   }else{
 
-    mission.textContent=
-    "✅ Mission Complete! अगला मिशन: 1000 Score";
-
-  }
-
-
-  if(
-    coins>=20 &&
-    score>=1000
-  ){
-
-    mission.textContent=
-    "🏆 सभी Mission Complete!";
+    m.textContent=
+    "🏆 Mission Complete!";
 
   }
 
 }
 
 
-/* =========================================
-   MOVE
-========================================= */
-
-function moveLeft(){
-
-  targetLane--;
-
-  if(targetLane<0)
-    targetLane=0;
-
-}
-
-
-function moveRight(){
-
-  targetLane++;
-
-  if(targetLane>2)
-    targetLane=2;
-
-}
-
-
-function jumpPlayer(){
-
-  if(jump===0){
-
-    jump=1;
-
-    jumpVelocity=18;
-
-  }
-
-}
-
-
-/* =========================================
-   GAME OVER
-========================================= */
+/* =========================
+GAME OVER
+========================= */
 
 function endGame(){
 
-  if(!gameRunning)
-    return;
+  if(!running)return;
 
-  gameRunning=false;
+  running=false;
 
   document.getElementById(
     "finalScore"
@@ -965,45 +1001,109 @@ function endGame(){
 }
 
 
-/* =========================================
-   GAME LOOP
-========================================= */
+/* =========================
+START
+========================= */
+
+function startGame(){
+
+  if(!playerReady){
+
+    alert(
+      "पहले अपना Character फोटो चुनें!"
+    );
+
+    return;
+
+  }
+
+
+  if(!policeReady){
+
+    alert(
+      "पहले Police Character फोटो चुनें!"
+    );
+
+    return;
+
+  }
+
+
+  running=true;
+
+  score=0;
+  coins=0;
+
+  lane=1;
+  targetLane=1;
+
+  jump=0;
+  jumpVelocity=0;
+
+  speed=6;
+
+  policeDistance=145;
+
+  obstacles=[];
+  coinList=[];
+  trees=[];
+
+  obstacleTimer=20;
+  coinTimer=10;
+  treeTimer=0;
+
+
+  document.getElementById(
+    "startScreen"
+  ).style.display="none";
+
+  document.getElementById(
+    "gameOver"
+  ).style.display="none";
+
+
+  requestAnimationFrame(
+    gameLoop
+  );
+
+}
+
+
+/* =========================
+GAME LOOP
+========================= */
 
 function gameLoop(){
 
-  if(!gameRunning)
-    return;
+  if(!running)return;
 
 
   ctx.clearRect(
-    0,
-    0,
-    W,
-    H
+    0,0,W,H
   );
 
 
-  drawRoad();
+  drawWorld();
 
 
-  /* trees */
+  /* TREES */
 
   treeTimer--;
 
   if(treeTimer<=0){
 
-    createTree();
+    makeTree();
 
     treeTimer=
     25+
-    Math.random()*30;
+    Math.random()*25;
 
   }
 
   drawTrees();
 
 
-  /* obstacle */
+  /* OBSTACLES */
 
   obstacleTimer--;
 
@@ -1012,16 +1112,16 @@ function gameLoop(){
     createObstacle();
 
     obstacleTimer=
-    70-
+    65-
     Math.min(
-      25,
-      speed*2
+      20,
+      speed
     );
 
   }
 
 
-  /* coins */
+  /* COINS */
 
   coinTimer--;
 
@@ -1030,23 +1130,23 @@ function gameLoop(){
     createCoin();
 
     coinTimer=
-    30+
+    25+
     Math.random()*20;
 
   }
 
 
-  /* smooth lane */
+  /* LANE */
 
-  playerLane+=
-  (targetLane-playerLane)
-  *0.20;
+  lane+=
+  (targetLane-lane)
+  *.20;
 
 
-  /* jump */
+  /* JUMP */
 
   if(
-    jump>0 ||
+    jump>0||
     jumpVelocity!==0
   ){
 
@@ -1059,7 +1159,6 @@ function gameLoop(){
     if(jump<=0){
 
       jump=0;
-
       jumpVelocity=0;
 
     }
@@ -1074,8 +1173,7 @@ function gameLoop(){
 
   checkCollision();
 
-
-  updatePolice();
+  policeChase();
 
 
   drawPolice();
@@ -1083,13 +1181,9 @@ function gameLoop(){
   drawPlayer();
 
 
-  /* score */
+  score+=.12;
 
-  score+=0.12;
-
-  /* speed धीरे-धीरे बढ़े */
-
-  speed+=0.0008;
+  speed+=.0006;
 
 
   document.getElementById(
@@ -1104,7 +1198,7 @@ function gameLoop(){
   coins;
 
 
-  updateMission();
+  missionUpdate();
 
 
   requestAnimationFrame(
@@ -1114,95 +1208,144 @@ function gameLoop(){
 }
 
 
-/* =========================================
-   TOUCH BUTTONS
-========================================= */
+/* =========================
+CONTROLS
+========================= */
+
+function left(){
+
+  targetLane--;
+
+  if(targetLane<0)
+    targetLane=0;
+
+}
+
+
+function right(){
+
+  targetLane++;
+
+  if(targetLane>2)
+    targetLane=2;
+
+}
+
+
+function jumpPlayer(){
+
+  if(
+    running&&
+    jump===0
+  ){
+
+    jump=1;
+    jumpVelocity=18;
+
+  }
+
+}
+
 
 document.getElementById(
   "left"
-).addEventListener(
-  "click",
-  moveLeft
-);
+).onclick=left;
 
 
 document.getElementById(
   "right"
-).addEventListener(
-  "click",
-  moveRight
-);
+).onclick=right;
 
 
 document.getElementById(
   "jump"
-).addEventListener(
-  "click",
-  jumpPlayer
-);
+).onclick=jumpPlayer;
 
 
-/* =========================================
-   KEYBOARD
-========================================= */
+/* =========================
+SWIPE CONTROLS
+========================= */
 
-document.addEventListener(
-  "keydown",
+let startX=0;
+let startY=0;
+
+
+canvas.addEventListener(
+  "touchstart",
   function(e){
 
-    if(e.key==="ArrowLeft")
-      moveLeft();
+    startX=
+    e.touches[0].clientX;
 
-    if(e.key==="ArrowRight")
-      moveRight();
+    startY=
+    e.touches[0].clientY;
 
-    if(
-      e.key==="ArrowUp" ||
-      e.code==="Space"
-    )
-      jumpPlayer();
-
-  }
+  },
+  {passive:true}
 );
 
 
-/* =========================================
-   START / RESTART
-========================================= */
+canvas.addEventListener(
+  "touchend",
+  function(e){
 
-function startGame(){
+    if(!running)return;
 
-  gameRunning=true;
+    const x=
+    e.changedTouches[0].clientX;
 
-  score=0;
-  coins=0;
+    const y=
+    e.changedTouches[0].clientY;
 
-  speed=6;
+    const dx=x-startX;
+    const dy=y-startY;
 
-  playerLane=1;
-  targetLane=1;
 
-  jump=0;
-  jumpVelocity=0;
+    if(
+      Math.abs(dx)>
+      Math.abs(dy)
+    ){
 
-  policeDistance=170;
+      if(dx>40)
+        right();
 
-  obstacles=[];
-  coinObjects=[];
-  trees=[];
+      if(dx<-40)
+        left();
 
-  document.getElementById(
-    "startScreen"
-  ).style.display="none";
+    }else{
 
-  document.getElementById(
-    "gameOver"
-  ).style.display="none";
+      if(dy<-40)
+        jumpPlayer();
 
-  gameLoop();
+    }
 
-}
+  },
+  {passive:true}
+);
 
+
+/* KEYBOARD */
+
+document.addEventListener(
+"keydown",
+function(e){
+
+  if(e.key==="ArrowLeft")
+    left();
+
+  if(e.key==="ArrowRight")
+    right();
+
+  if(
+    e.key==="ArrowUp"||
+    e.code==="Space"
+  )
+    jumpPlayer();
+
+});
+
+
+/* BUTTONS */
 
 document.getElementById(
   "startButton"
@@ -1211,9 +1354,22 @@ document.getElementById(
 
 document.getElementById(
   "restart"
-).onclick=startGame;
+).onclick=function(){
+
+  document.getElementById(
+    "gameOver"
+  ).style.display="none";
+
+  startGame();
+
+};
+
+
+/* INITIAL DRAW */
+
+drawWorld();
 
 </script>
 
 </body>
-</html>
+      </html>
