@@ -2,10 +2,8 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width,initial-scale=1.0,user-scalable=no">
-
-<title>3D Police Chase Runner</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Cartoon Police Chase 3D</title>
 
 <style>
 *{
@@ -16,11 +14,10 @@ content="width=device-width,initial-scale=1.0,user-scalable=no">
 
 html,body{
   margin:0;
-  padding:0;
   width:100%;
   height:100%;
   overflow:hidden;
-  background:#78d5ff;
+  background:#65c9ff;
   font-family:Arial,sans-serif;
 }
 
@@ -38,23 +35,23 @@ html,body{
   display:flex;
   justify-content:space-between;
   color:white;
-  font-size:20px;
-  font-weight:bold;
-  text-shadow:2px 2px 5px #000;
+  font-size:19px;
+  font-weight:900;
+  text-shadow:2px 3px 5px #000;
 }
 
 #mission{
   position:fixed;
-  top:60px;
+  top:52px;
   left:50%;
   transform:translateX(-50%);
   z-index:10;
-  background:#111d;
-  color:white;
-  padding:10px 18px;
-  border-radius:18px;
-  text-align:center;
+  background:#222d;
+  color:#fff;
+  padding:9px 16px;
+  border-radius:20px;
   font-weight:bold;
+  white-space:nowrap;
 }
 
 #controls{
@@ -65,24 +62,24 @@ html,body{
   z-index:20;
   display:flex;
   justify-content:space-between;
-  padding:0 25px;
+  padding:0 20px;
 }
 
 .btn{
-  width:78px;
-  height:65px;
-  border:0;
+  width:72px;
+  height:62px;
+  border:3px solid #222;
   border-radius:20px;
-  background:#ffffffdd;
-  font-size:30px;
-  box-shadow:0 5px 15px #0007;
+  background:#fff;
+  font-size:29px;
+  box-shadow:0 5px 12px #0008;
 }
 
 #jump{
   position:fixed;
-  bottom:18px;
   left:50%;
   transform:translateX(-50%);
+  bottom:18px;
 }
 
 .screen{
@@ -93,7 +90,7 @@ html,body{
   justify-content:center;
   align-items:center;
   background:#000b;
-  color:white;
+  color:#fff;
   text-align:center;
 }
 
@@ -101,33 +98,21 @@ html,body{
   width:90%;
   max-width:380px;
   background:#171717;
-  padding:22px;
-  border-radius:25px;
+  border:3px solid #ffd21c;
+  padding:24px;
+  border-radius:28px;
+  box-shadow:0 10px 40px #000;
 }
 
-.mainBtn,
-.fileBtn{
+.play{
   width:100%;
-  display:block;
-  padding:14px;
-  margin:10px 0;
+  padding:15px;
   border:0;
-  border-radius:15px;
-  font-size:18px;
-  font-weight:bold;
-}
-
-.mainBtn{
+  border-radius:16px;
   background:#ffd21c;
-}
-
-.fileBtn{
-  background:#287fff;
-  color:white;
-}
-
-input[type=file]{
-  display:none;
+  color:#111;
+  font-size:20px;
+  font-weight:900;
 }
 
 #gameOver{
@@ -141,12 +126,12 @@ input[type=file]{
 <div id="game"></div>
 
 <div id="hud">
-  <div>🏆 Score: <span id="score">0</span></div>
-  <div>🪙 Coins: <span id="coins">0</span></div>
+  <div>🏆 <span id="score">0</span></div>
+  <div>🪙 <span id="coins">0</span></div>
 </div>
 
 <div id="mission">
-🎯 Mission: 20 Coins (0/20)
+🎯 मिशन: 20 Coins जमा करो
 </div>
 
 <div id="controls">
@@ -155,116 +140,88 @@ input[type=file]{
   <button class="btn" id="right">➡️</button>
 </div>
 
-
 <div class="screen" id="startScreen">
+  <div class="box">
+    <h1>🏃‍♂️ CARTOON RUNNER</h1>
 
-<div class="box">
+    <p>
+      🚆 ट्रेन से बचो<br>
+      🌳 पेड़ों के बीच दौड़ो<br>
+      🪙 Coins जमा करो<br>
+      👮 Police से बचो
+    </p>
 
-<h1>🏃‍♂️ 3D POLICE CHASE</h1>
+    <p>
+      आपका character अपने-आप लगाया जाएगा।
+    </p>
 
-<p>ट्रेन से बचो और Coins जमा करो!</p>
-
-<label class="fileBtn">
-🏃 अपना Character चुनें
-<input id="characterFile"
-type="file"
-accept="image/*">
-</label>
-
-<p id="characterStatus">
-❌ Character नहीं चुना
-</p>
-
-<label class="fileBtn">
-👮 Police Character चुनें
-<input id="policeFile"
-type="file"
-accept="image/*">
-</label>
-
-<p id="policeStatus">
-❌ Police नहीं चुना
-</p>
-
-<button class="mainBtn"
-id="startButton">
-▶️ START 3D GAME
-</button>
-
+    <button class="play" id="start">
+      ▶️ GAME START
+    </button>
+  </div>
 </div>
-</div>
-
 
 <div class="screen" id="gameOver">
+  <div class="box">
+    <h1>🚨 GAME OVER</h1>
 
-<div class="box">
+    <p>👮 Police ने पकड़ लिया!</p>
 
-<h1>🚨 GAME OVER</h1>
+    <p>🏆 Score: <b id="finalScore">0</b></p>
+    <p>🪙 Coins: <b id="finalCoins">0</b></p>
 
-<p>👮 पुलिस ने पकड़ लिया!</p>
-
-<p>🏆 Score:
-<span id="finalScore">0</span>
-</p>
-
-<p>🪙 Coins:
-<span id="finalCoins">0</span>
-</p>
-
-<button class="mainBtn"
-id="restart">
-🔄 फिर से खेलें
-</button>
-
+    <button class="play" id="restart">
+      🔄 फिर से खेलें
+    </button>
+  </div>
 </div>
-</div>
-
-
-<!-- THREE.JS -->
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.min.js"></script>
 
 <script>
 
-/* =========================
-BASIC 3D
-========================= */
+/* =================================================
+   3D CARTOON GAME
+================================================= */
 
-const scene =
-new THREE.Scene();
+const scene = new THREE.Scene();
 
-scene.background =
-new THREE.Color(0x69c9f5);
+scene.background = new THREE.Color(0x65c9ff);
 
-scene.fog =
-new THREE.Fog(0x69c9f5,30,180);
+scene.fog = new THREE.Fog(
+  0x65c9ff,
+  35,
+  170
+);
 
+
+/* CAMERA */
 
 const camera =
 new THREE.PerspectiveCamera(
-60,
-innerWidth/innerHeight,
-0.1,
-300
+  60,
+  innerWidth / innerHeight,
+  0.1,
+  300
 );
 
-camera.position.set(
-0,6,12
-);
+camera.position.set(0,6,12);
 
+
+/* RENDERER */
 
 const renderer =
 new THREE.WebGLRenderer({
-antialias:true
+  antialias:true
 });
 
 renderer.setPixelRatio(
-Math.min(devicePixelRatio,2)
+  Math.min(devicePixelRatio,2)
 );
 
 renderer.setSize(
-innerWidth,
-innerHeight
+  innerWidth,
+  innerHeight
 );
 
 renderer.shadowMap.enabled=true;
@@ -274,28 +231,26 @@ document
 .appendChild(renderer.domElement);
 
 
-/* =========================
-LIGHT
-========================= */
+/* LIGHT */
 
-const ambient =
+const skyLight =
 new THREE.HemisphereLight(
-0xffffff,
-0x557744,
-2
+  0xffffff,
+  0x548044,
+  2.5
 );
 
-scene.add(ambient);
+scene.add(skyLight);
 
 
 const sun =
 new THREE.DirectionalLight(
-0xffffff,
-2
+  0xffffff,
+  2.2
 );
 
 sun.position.set(
--20,30,20
+  -20,30,20
 );
 
 sun.castShadow=true;
@@ -303,24 +258,27 @@ sun.castShadow=true;
 scene.add(sun);
 
 
-/* =========================
-ROAD
-========================= */
+/* =================================================
+   ROAD
+================================================= */
 
 const road =
 new THREE.Mesh(
-new THREE.BoxGeometry(
-18,
-0.2,
-220
-),
-new THREE.MeshStandardMaterial({
-color:0x292929
-})
+  new THREE.BoxGeometry(
+    18,
+    0.25,
+    240
+  ),
+  new THREE.MeshStandardMaterial({
+    color:0x303030,
+    roughness:1
+  })
 );
 
 road.position.set(
-0,-0.15,-70
+  0,
+  -0.15,
+  -75
 );
 
 road.receiveShadow=true;
@@ -328,677 +286,551 @@ road.receiveShadow=true;
 scene.add(road);
 
 
-/* ROAD SIDES */
+/* GRASS */
 
-function sideLine(x){
-
-const line =
+const grass =
 new THREE.Mesh(
-new THREE.BoxGeometry(
-0.3,
-0.05,
-220
-),
-new THREE.MeshStandardMaterial({
-color:0xffffff
-})
+  new THREE.PlaneGeometry(
+    250,
+    300
+  ),
+  new THREE.MeshStandardMaterial({
+    color:0x4e9b42
+  })
 );
 
-line.position.set(
-x,0,-70
+grass.rotation.x=
+-Math.PI/2;
+
+grass.position.set(
+  0,
+  -0.3,
+  -75
 );
 
-scene.add(line);
-
-}
-
-sideLine(-9);
-sideLine(9);
+scene.add(grass);
 
 
 /* LANE LINES */
 
-for(let x of [-3,3]){
+for(const x of [-3,3]){
 
-const line =
-new THREE.Mesh(
-new THREE.BoxGeometry(
-0.12,
-0.04,
-220
-),
-new THREE.MeshStandardMaterial({
-color:0xffffff
-})
-);
+  const line =
+  new THREE.Mesh(
+    new THREE.BoxGeometry(
+      0.12,
+      0.04,
+      240
+    ),
+    new THREE.MeshStandardMaterial({
+      color:0xffffff
+    })
+  );
 
-line.position.set(
-x,0.03,-70
-);
+  line.position.set(
+    x,
+    0.02,
+    -75
+  );
 
-scene.add(line);
-
+  scene.add(line);
 }
 
 
-/* =========================
-GROUND
-========================= */
+/* ROAD EDGES */
 
-const ground =
-new THREE.Mesh(
-new THREE.PlaneGeometry(
-250,300
-),
-new THREE.MeshStandardMaterial({
-color:0x4d983e
-})
-);
+for(const x of [-9,9]){
 
-ground.rotation.x=
--Math.PI/2;
+  const edge =
+  new THREE.Mesh(
+    new THREE.BoxGeometry(
+      0.3,
+      0.08,
+      240
+    ),
+    new THREE.MeshStandardMaterial({
+      color:0xffffff
+    })
+  );
 
-ground.position.y=-0.2;
+  edge.position.set(
+    x,
+    0.03,
+    -75
+  );
 
-ground.position.z=-70;
-
-scene.add(ground);
-
-
-/* =========================
-IMAGE SYSTEM
-========================= */
-
-let playerTexture=null;
-let policeTexture=null;
-
-let playerReady=false;
-let policeReady=false;
+  scene.add(edge);
+}
 
 
-/*
-White background remover.
-*/
-function removeWhite(img){
+/* =================================================
+   CARTOON TREES
+================================================= */
 
-const c=
-document.createElement("canvas");
+const trees=[];
 
-c.width=img.width;
-c.height=img.height;
+function makeTree(x,z){
 
-const ctx=
-c.getContext("2d");
+  const tree =
+  new THREE.Group();
 
-ctx.drawImage(
-img,0,0
-);
 
-const data=
-ctx.getImageData(
-0,0,c.width,c.height
-);
+  /* trunk */
+
+  const trunk =
+  new THREE.Mesh(
+    new THREE.CylinderGeometry(
+      .35,
+      .5,
+      3,
+      8
+    ),
+    new THREE.MeshStandardMaterial({
+      color:0x70452d
+    })
+  );
+
+  trunk.position.y=1.5;
+
+  tree.add(trunk);
+
+
+  /* cartoon leaves */
+
+  for(let i=0;i<4;i++){
+
+    const leaf =
+    new THREE.Mesh(
+      new THREE.SphereGeometry(
+        1.25,
+        12,
+        10
+      ),
+      new THREE.MeshStandardMaterial({
+        color:
+          i%2
+          ? 0x159447
+          : 0x27ad4b
+      })
+    );
+
+    leaf.position.set(
+      (i%2)*1-0.5,
+      3+i*.35,
+      (i%2)*.5
+    );
+
+    tree.add(leaf);
+
+  }
+
+
+  tree.position.set(
+    x,
+    0,
+    z
+  );
+
+  scene.add(tree);
+
+  trees.push(tree);
+}
+
+
+/* दोनों तरफ बहुत सारे पेड़ */
 
 for(
-let i=0;
-i<data.data.length;
-i+=4
+  let z=-10;
+  z>-210;
+  z-=12
 ){
 
-const r=data.data[i];
-const g=data.data[i+1];
-const b=data.data[i+2];
+  makeTree(
+    -13-Math.random()*4,
+    z
+  );
 
-if(
-r>225 &&
-g>225 &&
-b>225
-){
-
-data.data[i+3]=0;
-
+  makeTree(
+    13+Math.random()*4,
+    z-5
+  );
 }
 
-}
 
-ctx.putImageData(
-data,0,0
+/* =================================================
+   CHARACTER
+================================================= */
+
+const loader =
+new THREE.TextureLoader();
+
+const playerTexture =
+loader.load(
+  "character.jpg"
 );
 
-return new THREE.CanvasTexture(c);
-}
+const policeTexture =
+loader.load(
+  "police.png"
+);
 
 
-/* =========================
-PHOTO SELECT
-========================= */
-
-document
-.getElementById("characterFile")
-.addEventListener(
-"change",
-function(){
-
-const file=this.files[0];
-
-if(!file)return;
-
-const img=
-new Image();
-
-img.onload=function(){
-
-playerTexture=
-removeWhite(img);
-
-playerReady=true;
-
-document
-.getElementById(
-"characterStatus"
-)
-.textContent=
-"✅ Character तैयार है";
-
-};
-
-img.src=
-URL.createObjectURL(file);
-
-});
-
-
-document
-.getElementById("policeFile")
-.addEventListener(
-"change",
-function(){
-
-const file=this.files[0];
-
-if(!file)return;
-
-const img=
-new Image();
-
-img.onload=function(){
-
-policeTexture=
-removeWhite(img);
-
-policeReady=true;
-
-document
-.getElementById(
-"policeStatus"
-)
-.textContent=
-"✅ Police तैयार है";
-
-};
-
-img.src=
-URL.createObjectURL(file);
-
-});
-
-
-/* =========================
-SPRITE CREATOR
-========================= */
-
-function makeCharacter(texture){
-
-const material =
+const playerMaterial =
 new THREE.SpriteMaterial({
-map:texture,
-transparent:true,
-depthWrite:false
+  map:playerTexture,
+  transparent:true
 });
 
-const sprite =
-new THREE.Sprite(material);
-
-sprite.scale.set(
-4,
-6,
-1
-);
-
-sprite.castShadow=true;
-
-return sprite;
-
-}
-
-
-/* =========================
-PLAYER
-========================= */
-
-let player=null;
-
-let lane=1;
-let targetLane=1;
-
-const laneX=[
--6,0,6
-];
-
-let jumpY=0;
-let jumpVelocity=0;
-
-
-/* =========================
-POLICE
-========================= */
-
-let police=null;
-
-let policeDistance=14;
-
-
-/* =========================
-COINS
-========================= */
-
-let coinObjects=[];
-
-
-/* =========================
-TRAINS
-========================= */
-
-let trainObjects=[];
-
-
-/* =========================
-TREES
-========================= */
-
-let treeObjects=[];
-
-
-/* =========================
-CREATE TREE
-========================= */
-
-function createTree(x,z){
-
-const group=
-new THREE.Group();
-
-
-const trunk =
-new THREE.Mesh(
-new THREE.CylinderGeometry(
-0.35,
-0.45,
-3,
-8
-),
-new THREE.MeshStandardMaterial({
-color:0x70452c
-})
-);
-
-trunk.position.y=1.5;
-
-group.add(trunk);
-
-
-for(let i=0;i<3;i++){
-
-const leaf =
-new THREE.Mesh(
-new THREE.SphereGeometry(
-1.5,
-12,
-12
-),
-new THREE.MeshStandardMaterial({
-color:0x17813a
-})
-);
-
-leaf.position.set(
-(i-1)*0.7,
-3+i*.55,
-0
-);
-
-group.add(leaf);
-
-}
-
-group.position.set(
-x,0,z
-);
-
-scene.add(group);
-
-treeObjects.push(group);
-
-}
-
-
-/* TREES */
-
-for(let z=-10;z>-190;z-=12){
-
-createTree(
--13-Math.random()*3,
-z
-);
-
-createTree(
-13+Math.random()*3,
-z-5
-);
-
-}
-
-
-/* =========================
-CREATE TRAIN
-========================= */
-
-function createTrain(laneNumber,z){
-
-const group=
-new THREE.Group();
-
-
-const body =
-new THREE.Mesh(
-new THREE.BoxGeometry(
-4.2,
-3,
-8
-),
-new THREE.MeshStandardMaterial({
-color:0xd92727
-})
-);
-
-body.position.y=1.6;
-
-body.castShadow=true;
-
-group.add(body);
-
-
-const windowMat =
-new THREE.MeshStandardMaterial({
-color:0x8ee7ff
+const policeMaterial =
+new THREE.SpriteMaterial({
+  map:policeTexture,
+  transparent:true
 });
 
 
-for(let z2 of [-2,2]){
-
-const win =
-new THREE.Mesh(
-new THREE.BoxGeometry(
-3,
-1.1,
-0.1
-),
-windowMat
+const player =
+new THREE.Sprite(
+  playerMaterial
 );
 
-win.position.set(
-0,2.1,z2>0?4.01:-4.01
-);
-
-group.add(win);
-
-}
-
-
-group.position.set(
-laneX[laneNumber],
-0,
-z
-);
-
-scene.add(group);
-
-trainObjects.push(group);
-
-}
-
-
-/* =========================
-CREATE COIN
-========================= */
-
-function createCoin(laneNumber,z){
-
-const coin =
-new THREE.Mesh(
-new THREE.CylinderGeometry(
-0.65,
-0.65,
-0.18,
-32
-),
-new THREE.MeshStandardMaterial({
-color:0xffd21c,
-metalness:.6,
-roughness:.25
-})
-);
-
-coin.rotation.x=
-Math.PI/2;
-
-coin.position.set(
-laneX[laneNumber],
-1.4,
-z
-);
-
-scene.add(coin);
-
-coinObjects.push(coin);
-
-}
-
-
-/* =========================
-GAME VARIABLES
-========================= */
-
-let running=false;
-
-let score=0;
-let coins=0;
-
-let speed=0.55;
-
-let spawnTimer=0;
-
-let coinTimer=0;
-
-let policeCatch=0;
-
-
-/* =========================
-START
-========================= */
-
-function startGame(){
-
-if(!playerReady){
-
-alert(
-"पहले अपना Character चुनें!"
-);
-
-return;
-
-}
-
-if(!policeReady){
-
-alert(
-"पहले Police Character चुनें!"
-);
-
-return;
-
-}
-
-
-/* PLAYER */
-
-if(player)
-scene.remove(player);
-
-player=
-makeCharacter(
-playerTexture
+player.scale.set(
+  4,
+  6,
+  1
 );
 
 player.position.set(
-0,3,5
+  0,
+  3,
+  5
 );
 
 scene.add(player);
 
 
-/* POLICE */
-
-if(police)
-scene.remove(police);
-
-police=
-makeCharacter(
-policeTexture
+const police =
+new THREE.Sprite(
+  policeMaterial
 );
 
 police.scale.set(
-3.3,
-5,
-1
+  3.3,
+  5,
+  1
 );
 
 police.position.set(
-0,2,-4
+  0,
+  2.5,
+  -5
 );
 
 scene.add(police);
 
 
-/* RESET */
+/* =================================================
+   LANES
+================================================= */
 
-score=0;
-coins=0;
+const lanes=[
+  -6,
+  0,
+  6
+];
 
-lane=1;
-targetLane=1;
-
-jumpY=0;
-jumpVelocity=0;
-
-speed=.55;
-
-policeCatch=0;
-
-running=true;
+let currentLane=1;
+let targetLane=1;
 
 
-/* DELETE OLD */
+/* =================================================
+   JUMP
+================================================= */
 
-for(let x of coinObjects)
-scene.remove(x);
-
-for(let x of trainObjects)
-scene.remove(x);
-
-coinObjects=[];
-trainObjects=[];
+let jumpY=0;
+let jumpVelocity=0;
 
 
-/* SCREEN */
+/* =================================================
+   GAME VARIABLES
+================================================= */
 
-document
-.getElementById(
-"startScreen"
-).style.display="none";
+let playing=false;
 
-document
-.getElementById(
-"gameOver"
-).style.display="none";
+let score=0;
+let coins=0;
 
+let speed=.55;
+
+let policeDistance=0;
+
+let trains=[];
+let coinObjects=[];
+
+
+/* =================================================
+   TRAIN
+================================================= */
+
+function createTrain(){
+
+  const lane=
+  Math.floor(
+    Math.random()*3
+  );
+
+  const train =
+  new THREE.Group();
+
+
+  /* body */
+
+  const body =
+  new THREE.Mesh(
+    new THREE.BoxGeometry(
+      4,
+      3.2,
+      7
+    ),
+    new THREE.MeshStandardMaterial({
+      color:0xe02d2d
+    })
+  );
+
+  body.position.y=1.6;
+
+  train.add(body);
+
+
+  /* roof */
+
+  const roof =
+  new THREE.Mesh(
+    new THREE.BoxGeometry(
+      4.3,
+      .35,
+      7.3
+    ),
+    new THREE.MeshStandardMaterial({
+      color:0x222222
+    })
+  );
+
+  roof.position.y=3.35;
+
+  train.add(roof);
+
+
+  /* windows */
+
+  for(
+    const z of [-2.2,0,2.2]
+  ){
+
+    const windowMesh =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(
+        3,
+        1,
+        .12
+      ),
+      new THREE.MeshStandardMaterial({
+        color:0x91e8ff
+      })
+    );
+
+    windowMesh.position.set(
+      0,
+      2.1,
+      z
+    );
+
+    train.add(windowMesh);
+
+  }
+
+
+  /* front light */
+
+  const light =
+  new THREE.Mesh(
+    new THREE.SphereGeometry(
+      .3,
+      12,
+      12
+    ),
+    new THREE.MeshStandardMaterial({
+      color:0xffe600
+    })
+  );
+
+  light.position.set(
+    0,
+    1,
+    3.55
+  );
+
+  train.add(light);
+
+
+  train.position.set(
+    lanes[lane],
+    0,
+    -100
+  );
+
+  scene.add(train);
+
+  trains.push({
+    object:train,
+    lane:lane
+  });
 }
 
 
-/* =========================
-LANE
-========================= */
+/* =================================================
+   COIN
+================================================= */
 
-function moveLeft(){
+function createCoin(){
 
-if(!running)return;
+  const lane=
+  Math.floor(
+    Math.random()*3
+  );
 
-targetLane--;
+  const coin =
+  new THREE.Mesh(
+    new THREE.CylinderGeometry(
+      .7,
+      .7,
+      .2,
+      24
+    ),
+    new THREE.MeshStandardMaterial({
+      color:0xffd21c,
+      metalness:.5
+    })
+  );
 
-if(targetLane<0)
-targetLane=0;
+  coin.rotation.x=
+  Math.PI/2;
 
+  coin.position.set(
+    lanes[lane],
+    1.6,
+    -80
+  );
+
+  scene.add(coin);
+
+  coinObjects.push({
+    object:coin,
+    lane:lane
+  });
 }
 
 
-function moveRight(){
+/* =================================================
+   GAME START
+================================================= */
 
-if(!running)return;
+function startGame(){
 
-targetLane++;
+  playing=true;
 
-if(targetLane>2)
-targetLane=2;
+  score=0;
+  coins=0;
 
+  speed=.55;
+
+  currentLane=1;
+  targetLane=1;
+
+  jumpY=0;
+  jumpVelocity=0;
+
+  policeDistance=0;
+
+
+  /* पुराने objects हटाएँ */
+
+  trains.forEach(
+    t=>scene.remove(t.object)
+  );
+
+  coinObjects.forEach(
+    c=>scene.remove(c.object)
+  );
+
+  trains=[];
+  coinObjects=[];
+
+
+  document
+  .getElementById("startScreen")
+  .style.display="none";
+
+  document
+  .getElementById("gameOver")
+  .style.display="none";
 }
 
 
-/* =========================
-JUMP
-========================= */
+/* =================================================
+   CONTROLS
+================================================= */
+
+function left(){
+
+  if(!playing)return;
+
+  targetLane--;
+
+  if(targetLane<0)
+    targetLane=0;
+}
+
+
+function right(){
+
+  if(!playing)return;
+
+  targetLane++;
+
+  if(targetLane>2)
+    targetLane=2;
+}
+
 
 function jump(){
 
-if(
-!running ||
-jumpY>0
-)return;
+  if(
+    !playing ||
+    jumpY>0
+  ) return;
 
-jumpY=.1;
+  jumpY=.1;
 
-jumpVelocity=.42;
-
+  jumpVelocity=.43;
 }
 
 
-/* =========================
-BUTTONS
-========================= */
+/* BUTTONS */
 
 document
 .getElementById("left")
-.onclick=moveLeft;
+.onclick=left;
 
 document
 .getElementById("right")
-.onclick=moveRight;
+.onclick=right;
 
 document
 .getElementById("jump")
 .onclick=jump;
 
 document
-.getElementById("startButton")
+.getElementById("start")
 .onclick=startGame;
 
 document
@@ -1006,460 +838,42 @@ document
 .onclick=startGame;
 
 
-/* =========================
-KEYBOARD
-========================= */
+/* KEYBOARD */
 
 document.addEventListener(
 "keydown",
-e=>{
+function(e){
 
-if(e.key==="ArrowLeft")
-moveLeft();
+  if(e.key==="ArrowLeft")
+    left();
 
-if(e.key==="ArrowRight")
-moveRight();
+  if(e.key==="ArrowRight")
+    right();
 
-if(
-e.key==="ArrowUp" ||
-e.code==="Space"
-)
-jump();
-
+  if(
+    e.key==="ArrowUp" ||
+    e.code==="Space"
+  )
+    jump();
 });
 
 
-/* =========================
-SPAWN
-========================= */
-
-function spawnObjects(){
-
-spawnTimer-=speed;
-
-coinTimer-=speed;
-
-
-if(spawnTimer<=0){
-
-const l=
-Math.floor(
-Math.random()*3
-);
-
-createTrain(
-l,
--100
-);
-
-spawnTimer=
-45+
-Math.random()*35;
-
-}
-
-
-if(coinTimer<=0){
-
-const l=
-Math.floor(
-Math.random()*3
-);
-
-createCoin(
-l,
--70
-);
-
-coinTimer=
-18+
-Math.random()*20;
-
-}
-
-}
-
-
-/* =========================
-PLAYER UPDATE
-========================= */
-
-function updatePlayer(){
-
-const wantedX=
-laneX[targetLane];
-
-player.position.x +=
-(
-wantedX-
-player.position.x
-)*.15;
-
-
-/* JUMP */
-
-if(jumpY>0){
-
-jumpY+=
-jumpVelocity;
-
-jumpVelocity-=.025;
-
-if(jumpY<=0){
-
-jumpY=0;
-jumpVelocity=0;
-
-}
-
-}
-
-player.position.y=
-3+jumpY;
-
-
-/* RUNNING ANIMATION */
-
-player.rotation.z=
-Math.sin(
-Date.now()*.015
-)*.025;
-
-}
-
-
-/* =========================
-POLICE UPDATE
-========================= */
-
-function updatePolice(){
-
-police.position.x +=
-(
-player.position.x-
-police.position.x
-)*.08;
-
-
-policeCatch+=.004;
-
-
-police.position.z=
--4+
-policeCatch;
-
-
-if(
-policeCatch>8
-){
-
-endGame();
-
-}
-
-}
-
-
-/* =========================
-COIN UPDATE
-========================= */
-
-function updateCoins(){
-
-for(
-let i=coinObjects.length-1;
-i>=0;
-i--
-){
-
-const c=
-coinObjects[i];
-
-c.position.z+=speed;
-
-c.rotation.z+=.08;
-
-
-/* COLLECT */
-
-const dx=
-c.position.x-
-player.position.x;
-
-const dz=
-c.position.z-
-player.position.z;
-
-
-if(
-Math.abs(dx)<2.5 &&
-Math.abs(dz)<2.5 &&
-jumpY<4
-){
-
-coins++;
-score+=30;
-
-scene.remove(c);
-
-coinObjects.splice(
-i,1
-);
-
-continue;
-
-}
-
-
-/* DELETE */
-
-if(
-c.position.z>15
-){
-
-scene.remove(c);
-
-coinObjects.splice(
-i,1
-);
-
-}
-
-}
-
-}
-
-
-/* =========================
-TRAIN UPDATE
-========================= */
-
-function updateTrains(){
-
-for(
-let i=trainObjects.length-1;
-i>=0;
-i--
-){
-
-const t=
-trainObjects[i];
-
-t.position.z+=speed;
-
-
-/* COLLISION */
-
-const dx=
-Math.abs(
-t.position.x-
-player.position.x
-);
-
-const dz=
-Math.abs(
-t.position.z-
-player.position.z
-);
-
-
-if(
-dx<3 &&
-dz<4 &&
-jumpY<2.5
-){
-
-endGame();
-
-}
-
-
-/* DELETE */
-
-if(
-t.position.z>20
-){
-
-scene.remove(t);
-
-trainObjects.splice(
-i,1
-);
-
-}
-
-}
-
-}
-
-
-/* =========================
-HUD
-========================= */
-
-function updateHUD(){
-
-document
-.getElementById("score")
-.textContent=
-Math.floor(score);
-
-document
-.getElementById("coins")
-.textContent=
-coins;
-
-
-if(coins<20){
-
-document
-.getElementById("mission")
-.textContent=
-"🎯 Mission: 20 Coins ("+
-coins+
-"/20)";
-
-}else{
-
-document
-.getElementById("mission")
-.textContent=
-"🏆 Mission Complete!";
-
-}
-
-}
-
-
-/* =========================
-GAME OVER
-========================= */
-
-function endGame(){
-
-if(!running)return;
-
-running=false;
-
-document
-.getElementById("finalScore")
-.textContent=
-Math.floor(score);
-
-document
-.getElementById("finalCoins")
-.textContent=
-coins;
-
-document
-.getElementById("gameOver")
-.style.display="flex";
-
-}
-
-
-/* =========================
-ANIMATION
-========================= */
-
-function animate(){
-
-requestAnimationFrame(
-animate
-);
-
-if(running){
-
-spawnObjects();
-
-updatePlayer();
-
-updatePolice();
-
-updateCoins();
-
-updateTrains();
-
-score+=.08;
-
-speed+=.00025;
-
-updateHUD();
-
-}
-
-
-/* CAMERA */
-
-camera.position.x +=
-(
-player ?
-player.position.x*.12 :
-0
--
-camera.position.x
-)*.03;
-
-camera.position.y=
-6.2;
-
-camera.lookAt(
-player ?
-player.position.x :
-0,
-2,
--18
-);
-
-
-renderer.render(
-scene,
-camera
-);
-
-}
-
-animate();
-
-
-/* =========================
-RESIZE
-========================= */
-
-window.addEventListener(
-"resize",
-()=>{
-
-camera.aspect=
-innerWidth/innerHeight;
-
-camera.updateProjectionMatrix();
-
-renderer.setSize(
-innerWidth,
-innerHeight
-);
-
-});
-
-
-/* =========================
-SWIPE
-========================= */
+/* =================================================
+   TOUCH SWIPE
+================================================= */
 
 let touchX=0;
 let touchY=0;
 
-
 renderer.domElement.addEventListener(
 "touchstart",
-e=>{
+function(e){
 
-touchX=
-e.touches[0].clientX;
+  touchX=
+  e.touches[0].clientX;
 
-touchY=
-e.touches[0].clientY;
+  touchY=
+  e.touches[0].clientY;
 
 },
 {passive:true}
@@ -1468,41 +882,456 @@ e.touches[0].clientY;
 
 renderer.domElement.addEventListener(
 "touchend",
-e=>{
+function(e){
 
-const x=
-e.changedTouches[0].clientX;
+  if(!playing)return;
 
-const y=
-e.changedTouches[0].clientY;
+  const x=
+  e.changedTouches[0].clientX;
 
-const dx=x-touchX;
-const dy=y-touchY;
+  const y=
+  e.changedTouches[0].clientY;
+
+  const dx=x-touchX;
+  const dy=y-touchY;
 
 
-if(
-Math.abs(dx)>
-Math.abs(dy)
-){
+  if(
+    Math.abs(dx)>
+    Math.abs(dy)
+  ){
 
-if(dx>40)
-moveRight();
+    if(dx>40)
+      right();
 
-if(dx<-40)
-moveLeft();
+    if(dx<-40)
+      left();
 
-}else{
+  }else{
 
-if(dy<-40)
-jump();
+    if(dy<-40)
+      jump();
 
-}
+  }
 
 },
 {passive:true}
 );
 
+
+/* =================================================
+   UPDATE PLAYER
+================================================= */
+
+function updatePlayer(){
+
+  const wanted=
+  lanes[targetLane];
+
+  player.position.x +=
+  (
+    wanted-
+    player.position.x
+  )*.15;
+
+
+  /* jump */
+
+  if(jumpY>0){
+
+    jumpY+=jumpVelocity;
+
+    jumpVelocity-=.025;
+
+    if(jumpY<=0){
+
+      jumpY=0;
+      jumpVelocity=0;
+    }
+  }
+
+
+  player.position.y=
+  3+jumpY;
+
+
+  /* cartoon running bounce */
+
+  if(playing){
+
+    player.position.y +=
+    Math.sin(
+      Date.now()*.018
+    )*.08;
+
+  }
+}
+
+
+/* =================================================
+   POLICE CHASE
+================================================= */
+
+function updatePolice(){
+
+  police.position.x +=
+  (
+    player.position.x-
+    police.position.x
+  )*.08;
+
+
+  policeDistance+=.004;
+
+
+  police.position.z=
+  -5+
+  policeDistance;
+
+
+  /* police थोड़ा animation */
+
+  police.position.y=
+  2.5+
+  Math.sin(
+    Date.now()*.018
+  )*.05;
+
+
+  if(
+    policeDistance>9
+  ){
+
+    gameOver();
+  }
+}
+
+
+/* =================================================
+   UPDATE TRAIN
+================================================= */
+
+function updateTrains(){
+
+  for(
+    let i=trains.length-1;
+    i>=0;
+    i--
+  ){
+
+    const t=
+    trains[i];
+
+    t.object.position.z+=
+    speed;
+
+
+    const dx=
+    Math.abs(
+      t.object.position.x-
+      player.position.x
+    );
+
+    const dz=
+    Math.abs(
+      t.object.position.z-
+      player.position.z
+    );
+
+
+    /* collision */
+
+    if(
+      dx<2.8 &&
+      dz<4 &&
+      jumpY<2.3
+    ){
+
+      gameOver();
+
+      return;
+    }
+
+
+    if(
+      t.object.position.z>20
+    ){
+
+      scene.remove(
+        t.object
+      );
+
+      trains.splice(
+        i,
+        1
+      );
+    }
+  }
+}
+
+
+/* =================================================
+   UPDATE COINS
+================================================= */
+
+function updateCoins(){
+
+  for(
+    let i=coinObjects.length-1;
+    i>=0;
+    i--
+  ){
+
+    const c=
+    coinObjects[i];
+
+    c.object.position.z+=
+    speed;
+
+    c.object.rotation.z+=.08;
+
+
+    const dx=
+    Math.abs(
+      c.object.position.x-
+      player.position.x
+    );
+
+    const dz=
+    Math.abs(
+      c.object.position.z-
+      player.position.z
+    );
+
+
+    if(
+      dx<2.3 &&
+      dz<2.5
+    ){
+
+      coins++;
+      score+=25;
+
+      scene.remove(
+        c.object
+      );
+
+      coinObjects.splice(
+        i,
+        1
+      );
+
+      continue;
+    }
+
+
+    if(
+      c.object.position.z>20
+    ){
+
+      scene.remove(
+        c.object
+      );
+
+      coinObjects.splice(
+        i,
+        1
+      );
+    }
+  }
+}
+
+
+/* =================================================
+   MISSION
+================================================= */
+
+function updateMission(){
+
+  const m=
+  document.getElementById(
+    "mission"
+  );
+
+
+  if(coins<20){
+
+    m.textContent=
+    "🎯 Mission: 20 Coins ("+
+    coins+
+    "/20)";
+
+  }else if(score<1000){
+
+    m.textContent=
+    "🎯 Mission: 1000 Score";
+
+  }else{
+
+    m.textContent=
+    "🏆 Mission Complete!";
+  }
+}
+
+
+/* =================================================
+   GAME OVER
+================================================= */
+
+function gameOver(){
+
+  if(!playing)return;
+
+  playing=false;
+
+
+  document
+  .getElementById(
+    "finalScore"
+  )
+  .textContent=
+  Math.floor(score);
+
+
+  document
+  .getElementById(
+    "finalCoins"
+  )
+  .textContent=
+  coins;
+
+
+  document
+  .getElementById(
+    "gameOver"
+  )
+  .style.display="flex";
+}
+
+
+/* =================================================
+   SPAWN
+================================================= */
+
+let trainTimer=20;
+let coinTimer=10;
+
+function spawnObjects(){
+
+  trainTimer-=speed;
+
+  coinTimer-=speed;
+
+
+  if(trainTimer<=0){
+
+    createTrain();
+
+    trainTimer=
+    45+
+    Math.random()*30;
+  }
+
+
+  if(coinTimer<=0){
+
+    createCoin();
+
+    coinTimer=
+    18+
+    Math.random()*18;
+  }
+}
+
+
+/* =================================================
+   ANIMATION
+================================================= */
+
+function animate(){
+
+  requestAnimationFrame(
+    animate
+  );
+
+
+  if(playing){
+
+    spawnObjects();
+
+    updatePlayer();
+
+    updatePolice();
+
+    updateTrains();
+
+    updateCoins();
+
+    score+=.08;
+
+    speed+=.0002;
+
+    document
+    .getElementById("score")
+    .textContent=
+    Math.floor(score);
+
+    document
+    .getElementById("coins")
+    .textContent=
+    coins;
+
+    updateMission();
+  }
+
+
+  /* CAMERA */
+
+  camera.position.x +=
+  (
+    player.position.x*.15-
+    camera.position.x
+  )*.04;
+
+
+  camera.position.y=6;
+
+  camera.lookAt(
+    player.position.x,
+    2,
+    -18
+  );
+
+
+  renderer.render(
+    scene,
+    camera
+  );
+}
+
+animate();
+
+
+/* =================================================
+   RESIZE
+================================================= */
+
+window.addEventListener(
+"resize",
+function(){
+
+  camera.aspect=
+  innerWidth/innerHeight;
+
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(
+    innerWidth,
+    innerHeight
+  );
+});
+
 </script>
 
 </body>
-</html>
+  </html>
